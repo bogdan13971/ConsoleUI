@@ -3,30 +3,48 @@
 
 using namespace ui;
 
-SubMenu::SubMenu(const std::string& name, HISTORY* history)
-	: Item{ name },
-	selected{ 0 },
-	history{ history }
+SubMenu::SubMenu(std::string&& label, const ExecCallback& execCB)
+	: SubMenu{ std::move(label), execCB, [&]() {return label;}, NO_OP_CB }
 {}
 
-SubMenu::~SubMenu()
+SubMenu::SubMenu(std::string&& label,
+	const ExecCallback& execCB,
+	const UpdateCallback& updateCB,
+	const BackCallback& backCB)
+	: Item{ std::move(label), execCB, updateCB },
+	backCallback{ backCB },
+	selected{ 0 }
+{};
+
+void SubMenu::setBackCallback(const BackCallback& backCB)
 {
-	for (Item* item : items)
-	{
-		delete item;
-	}
+	backCallback = backCB;
 }
 
-void SubMenu::execute()
+const SubMenu::BackCallback& SubMenu::getBackCallback() const
+{
+	return backCallback;
+}
+
+
+void SubMenu::execute() const
 {
 	Item::execute();
 
 	std::cout << CLEAR_SCREEN;
-
-	history->push(this);
 }
 
-void SubMenu::printItems()
+void SubMenu::update()
+{
+	Item::update();
+
+	for (const auto& item : items)
+	{
+		item->update();
+	}
+}
+
+void SubMenu::printItems() const
 {
 	for (size_t i = 0; i < items.size(); i++)
 	{
@@ -43,12 +61,12 @@ void SubMenu::printItems()
 		{
 			std::cout << CLEAR_FORMAT;
 		}
-
-		std::cout << "\n";
 	}
+
+	std::cout << "\n";
 }
 
-void SubMenu::executeSelected()
+void SubMenu::executeSelected() const
 {
 	if (items.empty())
 	{
@@ -80,45 +98,58 @@ void SubMenu::moveDown()
 
 void SubMenu::back()
 {
-	selected = 0;
-	history->pop();
+	backCallback();
 
+	selected = 0;
 	std::cout << CLEAR_SCREEN;
 }
 
-Item* SubMenu::addItem(const std::string& name)
+Item& SubMenu::addItem(std::string&& label, const ExecCallback& execCB)
 {
-	items.push_back(new Item(name));
-	return items.back();
+	items.push_back(std::make_unique<Item>(std::move(label), execCB));
+	return *(items.back().get());
 }
 
-SubMenu* SubMenu::addSubMenu(const std::string& name)
+Item& SubMenu::addItem(std::string&& label, const ExecCallback& execCB, const UpdateCallback& updateCB)
 {
-	items.push_back(new SubMenu(name, history));
-	return static_cast<SubMenu*>(items.back());
+	auto& item = addItem(std::move(label), execCB);
+	item.setUpdateCallback(updateCB);
+	return item;
 }
 
-Item* SubMenu::getSelected()
+SubMenu& SubMenu::addSubmenu(std::string&& label, const ExecCallback& execCB)
 {
-	return items[selected];
+	items.push_back(std::make_unique<SubMenu>(std::move(label), execCB));
+	return dynamic_cast<SubMenu&>(*(items.back().get()));
 }
 
-const std::vector<Item*>& SubMenu::getItems()
+SubMenu& SubMenu::addSubmenu(std::string&& label, const ExecCallback& execCB, const UpdateCallback& updateCB, const SubMenu::BackCallback& backCB)
 {
-	return items;
+	auto& submenu = addSubmenu(std::move(label), execCB);
+	submenu.setUpdateCallback(updateCB);
+	submenu.setBackCallback(backCB);
+	return submenu;
 }
 
-void SubMenu::setDirty()
+Item& SubMenu::getSelected()
 {
-	setBaseDirty();
+	return *(items[selected]);
+}
 
-	for (auto item : items)
+std::vector<std::reference_wrapper<Item>> SubMenu::getItems()
+{
+	decltype(getItems()) result;
+	for (const auto& item : items)
 	{
-		item->setDirty();
+		result.push_back(*item);
 	}
+
+	return result;
 }
 
-void SubMenu::setBaseDirty()
+size_t SubMenu::numberOfItems() const
 {
-	Item::setDirty();
+	return items.size();
 }
+
+const Item::ExecCallback Item::NO_OP_CB = []() {};

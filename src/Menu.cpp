@@ -3,29 +3,56 @@
 using namespace ui;
 
 Menu::Menu()
-	: root{ "root", &history}
+	: root{std::make_shared<SubMenu>("root")}
 {
-	history.push(&root);
+	history.push(root.get());
 }
 
-Item* Menu::addItem(const std::string& name)
+Menu::~Menu()
+{}
+
+Item& Menu::addItem(std::string&& label, const Item::ExecCallback& execCB)
 {
-	return root.addItem(name);
+	return history.top()->addItem(std::move(label), execCB);
 }
 
-SubMenu* Menu::addSubmenu(const std::string& name)
+Item& Menu::addItem(std::string&& label, const Item::ExecCallback& execCB, const Item::UpdateCallback& updateCB)
 {
-	return root.addSubMenu(name);
+	return history.top()->addItem(std::move(label), execCB, updateCB);
 }
 
-void Menu::print()
+SubMenu& Menu::addSubmenu(std::string&& label, const Item::ExecCallback& execCB)
 {
-	Component::print();
-	
-	if (root.items.size() == 0)
+	auto& submenu = history.top()->addSubmenu(std::move(label), execCB);
+	registerToMenu(submenu);
+	return submenu;
+}
+
+SubMenu& Menu::addSubmenu(std::string&& label, const Item::ExecCallback& execCB, const Item::UpdateCallback& updateCB, const SubMenu::BackCallback& backCB)
+{
+	auto& submenu = history.top()->addSubmenu(std::move(label), execCB, updateCB, backCB);
+	registerToMenu(submenu);
+	return submenu;
+}
+
+void Menu::registerToMenu(SubMenu& submenu)
+{
+	submenu.setExecCallback([&, cb = submenu.getExecCallback()]() 
 	{
-		return;
-	}
+		history.push(&submenu); 
+		cb(); 
+	});
+
+	submenu.setBackCallback([&, cb = submenu.getBackCallback()]()
+	{
+		cb(); 
+		history.pop(); 
+	});
+}
+
+void Menu::moveToCoords() const
+{
+	Component::moveToCoords();
 
 	history.top()->printItems();
 }
@@ -55,19 +82,19 @@ void Menu::back()
 	history.top()->back();
 }
 
-size_t Menu::numberOfItems()
+size_t Menu::numberOfItems() const
 {
-	return history.top()->items.size();
+	return history.top()->numberOfItems();
 }
 
-Item* Menu::getSelectedItem()
+Item& Menu::getSelectedItem()
 {
 	return history.top()->getSelected();
 }
 
-SubMenu* Menu::getParentSubMenu()
+SubMenu& Menu::getParentSubMenu()
 {
-	return history.top();
+	return *(history.top());
 }
 
 std::vector<SubMenu*> Menu::getParents()

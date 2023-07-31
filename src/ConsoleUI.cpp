@@ -55,10 +55,10 @@ void ConsoleUI::render()
 	//reset cursor instead of full clear to fix blinking
 	std::cout << RESET_CURSOR;
 
-	title->print();
-	menu->print();
-	consoleLog->print();
-	helper->print();
+	title->moveToCoords();
+	menu->moveToCoords();
+	consoleLog->moveToCoords();
+	helper->moveToCoords();
 
 	std::cout << HIDE_CURSOR;
 }

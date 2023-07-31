@@ -42,7 +42,7 @@ public:
 		lines.clear();
 	}
 
-	inline void print() override
+	inline void moveToCoords() const override
 	{
 		std::cout << CLEAR_TO_END;
 		std::cout << moveCursor(row - lines.size());

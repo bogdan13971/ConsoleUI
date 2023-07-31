@@ -7,43 +7,48 @@
 namespace ui
 {
 
-class Menu;
-
 class SubMenu : public Item
 {
-private:
-	using HISTORY = std::stack<SubMenu*>;
+public:
+	using BackCallback = std::function<void()>;
 
 private:
+	BackCallback backCallback;
 	unsigned short selected;
-	std::vector<Item*> items;
-	HISTORY* history;
+	std::vector<std::unique_ptr<Item>> items;
 
-private:
-	SubMenu(const std::string&, HISTORY*);
+public:
+	SubMenu(std::string&&, const ExecCallback& = NO_OP_CB);
 
-	//rule of 5, non-copiable, non-movable
+	SubMenu(std::string&&,
+		const ExecCallback&,
+		const UpdateCallback&,
+		const BackCallback& = NO_OP_CB);
+	
 	SubMenu(const SubMenu&) = delete;
 	SubMenu& operator=(const SubMenu&) = delete;
-	SubMenu(SubMenu&&) = delete;
-	SubMenu& operator=(SubMenu&&) = delete;
-	~SubMenu();
+	~SubMenu() = default;
 
-	void printItems();
-	void executeSelected();
+	void setBackCallback(const BackCallback&);
+	const BackCallback& getBackCallback() const;
+
+	void execute() const override;
+	void update() override;
+
+	void printItems() const;
+	void executeSelected() const;
 	void moveUp();
 	void moveDown();
 	void back();
 
-public:
-	void execute() override;
-	void setBaseDirty();
-	void setDirty() override;
-
-	Item* addItem(const std::string&);
-	SubMenu* addSubMenu(const std::string&);
-	Item* getSelected();
-	const std::vector<Item*>& getItems();
+	Item& addItem(std::string&&, const ExecCallback& = NO_OP_CB);
+	Item& addItem(std::string&&, const ExecCallback&, const UpdateCallback&);
+	SubMenu& addSubmenu(std::string&&, const ExecCallback& = NO_OP_CB);
+	SubMenu& addSubmenu(std::string&&, const ExecCallback&, const UpdateCallback&, const BackCallback& = NO_OP_CB);
+	
+	Item& getSelected();
+	std::vector<std::reference_wrapper<Item>> getItems();
+	size_t numberOfItems() const;
 
 public:
 	friend class Menu;

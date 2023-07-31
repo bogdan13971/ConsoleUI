@@ -7,47 +7,54 @@
 namespace ui
 {
 
-class SubMenu;
-
 class Item
 {
-private:
+public:
 	using ExecCallback = std::function<void()>;
 	using UpdateCallback = std::function<std::string()>;
+
+	static const ExecCallback NO_OP_CB;
 
 private:
 	std::string label;
 	ExecCallback execCallback;
-
-	bool isDirty;
 	UpdateCallback updateCallback;
 
-private:
-	Item(const std::string& label)
-		: label{ label },
-		execCallback{[]() {}},
-		updateCallback{ []() {return "";}},
-		isDirty{false}
+public:
+	Item(std::string&& label,
+		const ExecCallback& execCB = NO_OP_CB)
+		: Item{ std::move(label), execCB, [&]() {return this->label; } }
+	{}
+
+	Item(std::string&& label,
+		const ExecCallback& execCB,
+		const UpdateCallback& updateCB)
+		: label{ std::move(label) },
+		execCallback{ execCB },
+		updateCallback{updateCB}
 	{};
 
-	~Item()
+public:
+	Item(const Item&) = delete;
+	Item& operator=(const Item&) = delete;
+
+	virtual ~Item() 
 	{}
 
 public:
-	inline virtual void print()
+	inline virtual void print() const
 	{
-		if (isDirty)
-		{
-			label = updateCallback();
-			isDirty = false;
-		}
-
-		std::cout << label;
+		std::cout << label << "\n";
 	}
 
-	inline virtual void execute()
+	inline virtual void execute() const
 	{
 		execCallback();
+	}
+
+	inline virtual void update()
+	{
+		label = updateCallback();
 	}
 
 	inline void setExecCallback(const ExecCallback& cb)
@@ -60,9 +67,9 @@ public:
 		updateCallback = cb;
 	}
 
-	inline virtual void setDirty()
+	inline const ExecCallback& getExecCallback() const
 	{
-		isDirty = true;
+		return execCallback;
 	}
 
 public:

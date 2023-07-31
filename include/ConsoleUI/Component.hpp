@@ -22,7 +22,7 @@ public:
 		this->col = col;
 	}
 
-	inline virtual void print()
+	inline virtual void moveToCoords() const
 	{
 		std::cout << moveCursor(row, col);
 	}
@@ -34,13 +34,13 @@ private:
 	std::string label;
 
 public:
-	Title(const std::string& label)
-		: label{ label }
+	Title(std::string&& label)
+		: label{ std::move(label) }
 	{}
 
-	inline void print() override
+	inline void moveToCoords() const override
 	{
-		Component::print();
+		Component::moveToCoords();
 		std::cout << BOLD_FORMAT;
 		std::cout << label;
 		std::cout << CLEAR_FORMAT;
@@ -89,14 +89,14 @@ public:
 		isActive = !isActive;
 	}
 
-	inline void print() override
+	inline void moveToCoords() const override
 	{
 		if (!isActive)
 		{
 			return;
 		}
 
-		Component::print();
+		Component::moveToCoords();
 		
 		unsigned char tab = 0;
 		unsigned char index = 0;
