@@ -25,10 +25,13 @@ public:
 
 	void moveToCoords() const override;
 
-	void execute();
-	void moveUp();
-	void moveDown();
-	void back();
+	void addToHistory(SubMenu&);
+	void removeFromHistory();
+
+	void execute() const;
+	void moveUp() const;
+	void moveDown() const;
+	void back() const;
 
 	size_t numberOfItems() const;
 	Item& getSelectedItem();

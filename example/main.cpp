@@ -44,7 +44,7 @@ int main()
 	auto& it1 = menu->addItem("Item 1");
 	it1.setExecCallback([&ui]() {ui.log("Item 1 was pressed"); });
 	auto& sub1 = menu->addSubmenu("Sub 1");
-	//sub1.setExecCallback([&ui]() {ui.log("Entered submenu 1"); });
+	sub1.setExecCallback([&ui]() {ui.log("Entered submenu 1"); });
 	auto& it2 = menu->addItem("Item 2");
 	it2.setExecCallback([&ui]() {ui.log("Item 2 was pressed"); });
 	auto& it3 = menu->addItem("Item 3");
@@ -55,8 +55,8 @@ int main()
 	auto& sub1it2 = sub1.addItem("Maciuca");
 	sub1it2.setExecCallback([&ui]() {ui.log("Vai ce madular"); });
 	auto& sub1it3 = sub1.addSubmenu("Madular");
-	//sub1it3.setExecCallback([&ui]() {ui.log("Doamna mirabela"); });
-
+	sub1it3.setExecCallback([&ui]() {ui.log("Doamna mirabela"); });
+	sub1it3.setBackCallback([&ui]() {ui.log("Out of mirabela"); });
 	auto& subit3sub1 = sub1it3.addItem("Ce gagica exploziva");
 	subit3sub1.setExecCallback([&ui]() {ui.log("Ati explodad in amor"); });
 

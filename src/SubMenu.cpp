@@ -1,19 +1,21 @@
 #include "SubMenu.hpp"
 #include "ConsoleCommands.hpp"
+#include "Menu.hpp"
 
 using namespace ui;
 
-SubMenu::SubMenu(std::string&& label, const ExecCallback& execCB)
-	: SubMenu{ std::move(label), execCB, [&]() {return label;}, NO_OP_CB }
+SubMenu::SubMenu(Menu& menu,std::string&& label, const ExecCallback& execCB)
+	: SubMenu{ menu,std::move(label), execCB, [&]() {return label;}, NO_OP_CB }
 {}
 
-SubMenu::SubMenu(std::string&& label,
+SubMenu::SubMenu(Menu& menu,std::string&& label,
 	const ExecCallback& execCB,
 	const UpdateCallback& updateCB,
 	const BackCallback& backCB)
 	: Item{ std::move(label), execCB, updateCB },
 	backCallback{ backCB },
-	selected{ 0 }
+	selected{ 0 },
+	menu{menu}
 {};
 
 void SubMenu::setBackCallback(const BackCallback& backCB)
@@ -26,10 +28,11 @@ const SubMenu::BackCallback& SubMenu::getBackCallback() const
 	return backCallback;
 }
 
-
-void SubMenu::execute() const
+void SubMenu::execute()
 {
 	Item::execute();
+
+	menu.addToHistory(*this);
 
 	std::cout << CLEAR_SCREEN;
 }
@@ -76,7 +79,7 @@ void SubMenu::executeSelected() const
 	items[selected]->execute();
 }
 
-void SubMenu::moveUp()
+void SubMenu::moveUp() const
 {
 	if (selected == 0)
 	{
@@ -86,7 +89,7 @@ void SubMenu::moveUp()
 	selected--;
 }
 
-void SubMenu::moveDown()
+void SubMenu::moveDown() const
 {
 	if (selected == items.size() - 1)
 	{
@@ -96,12 +99,14 @@ void SubMenu::moveDown()
 	selected++;
 }
 
-void SubMenu::back()
+void SubMenu::back() const
 {
 	backCallback();
 
 	selected = 0;
 	std::cout << CLEAR_SCREEN;
+
+	menu.removeFromHistory();
 }
 
 Item& SubMenu::addItem(std::string&& label, const ExecCallback& execCB)
@@ -119,7 +124,7 @@ Item& SubMenu::addItem(std::string&& label, const ExecCallback& execCB, const Up
 
 SubMenu& SubMenu::addSubmenu(std::string&& label, const ExecCallback& execCB)
 {
-	items.push_back(std::make_unique<SubMenu>(std::move(label), execCB));
+	items.push_back(std::make_unique<SubMenu>(menu, std::move(label), execCB));
 	return dynamic_cast<SubMenu&>(*(items.back().get()));
 }
 

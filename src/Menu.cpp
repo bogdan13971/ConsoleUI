@@ -3,7 +3,7 @@
 using namespace ui;
 
 Menu::Menu()
-	: root{std::make_shared<SubMenu>("root")}
+	: root{std::make_shared<SubMenu>(*this, "root")}
 {
 	history.push(root.get());
 }
@@ -13,26 +13,22 @@ Menu::~Menu()
 
 Item& Menu::addItem(std::string&& label, const Item::ExecCallback& execCB)
 {
-	return history.top()->addItem(std::move(label), execCB);
+	return root->addItem(std::move(label), execCB);
 }
 
 Item& Menu::addItem(std::string&& label, const Item::ExecCallback& execCB, const Item::UpdateCallback& updateCB)
 {
-	return history.top()->addItem(std::move(label), execCB, updateCB);
+	return root->addItem(std::move(label), execCB, updateCB);
 }
 
 SubMenu& Menu::addSubmenu(std::string&& label, const Item::ExecCallback& execCB)
 {
-	auto& submenu = history.top()->addSubmenu(std::move(label), execCB);
-	registerToMenu(submenu);
-	return submenu;
+	return root->addSubmenu(std::move(label), execCB);
 }
 
 SubMenu& Menu::addSubmenu(std::string&& label, const Item::ExecCallback& execCB, const Item::UpdateCallback& updateCB, const SubMenu::BackCallback& backCB)
 {
-	auto& submenu = history.top()->addSubmenu(std::move(label), execCB, updateCB, backCB);
-	registerToMenu(submenu);
-	return submenu;
+	return root->addSubmenu(std::move(label), execCB, updateCB, backCB);
 }
 
 void Menu::registerToMenu(SubMenu& submenu)
@@ -57,22 +53,32 @@ void Menu::moveToCoords() const
 	history.top()->printItems();
 }
 
-void Menu::execute()
+void Menu::addToHistory(SubMenu& submenu)
+{
+	history.push(&submenu);
+}
+
+void Menu::removeFromHistory()
+{
+	history.pop();
+}
+
+void Menu::execute() const
 {
 	history.top()->executeSelected();
 }
 
-void Menu::moveUp()
+void Menu::moveUp() const
 {
 	history.top()->moveUp();
 }
 
-void Menu::moveDown()
+void Menu::moveDown() const
 {
 	history.top()->moveDown();
 }
 
-void Menu::back()
+void Menu::back() const
 {
 	if (history.size() == 1)
 	{

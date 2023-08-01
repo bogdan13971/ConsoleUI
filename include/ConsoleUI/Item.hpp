@@ -47,7 +47,7 @@ public:
 		std::cout << label << "\n";
 	}
 
-	inline virtual void execute() const
+	inline virtual void execute()
 	{
 		execCallback();
 	}
