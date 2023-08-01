@@ -76,4 +76,26 @@ public:
 	friend class SubMenu;
 };
 
+template<class Base, class Derived = Base>
+class non_owning_ptr
+{
+private:
+	Derived* ptr;
+
+public:
+	non_owning_ptr(const std::unique_ptr<Base>& uptr)
+		: ptr{ dynamic_cast<Derived*>(uptr.get()) }
+	{}
+
+	inline Derived* operator->()
+	{
+		return ptr;
+	}
+};
+
+class SubMenu;
+
+using ItemHandle = non_owning_ptr<Item>;
+using SubMenuHandle = non_owning_ptr<Item, SubMenu>;
+
 }//uit

@@ -41,30 +41,30 @@ int main()
 	eventListener->registerKeyPressEventHandler('i', [&counter, &isDirty]() {counter++; isDirty = true; });
 
 	auto menu = std::make_unique<Menu>();
-	auto& it1 = menu->addItem("Item 1");
-	it1.setExecCallback([&ui]() {ui.log("Item 1 was pressed"); });
-	auto& sub1 = menu->addSubmenu("Sub 1");
-	sub1.setExecCallback([&ui]() {ui.log("Entered submenu 1"); });
-	auto& it2 = menu->addItem("Item 2");
-	it2.setExecCallback([&ui]() {ui.log("Item 2 was pressed"); });
-	auto& it3 = menu->addItem("Item 3");
-	it3.setExecCallback([&ui]() {ui.log("Item 3 was pressed"); });
+	auto it1 = menu->createItem("Item 1");
+	it1->setExecCallback([&ui]() {ui.log("Item 1 was pressed"); });
+	auto sub1 = menu->createSubmenu("Sub 1");
+	sub1->setExecCallback([&ui]() {ui.log("Entered submenu 1"); });
+	auto it2 = menu->createItem("Item 2");
+	it2->setExecCallback([&ui]() {ui.log("Item 2 was pressed"); });
+	auto it3 = menu->createItem("Item 3");
+	it3->setExecCallback([&ui]() {ui.log("Item 3 was pressed"); });
 
-	auto& sub1it1 = sub1.addItem("Item 1 in Sub 1");
-	sub1it1.setExecCallback([&ui]() {ui.log("Item 1 in submenu 1"); });
-	auto& sub1it2 = sub1.addItem("Maciuca");
-	sub1it2.setExecCallback([&ui]() {ui.log("Vai ce madular"); });
-	auto& sub1it3 = sub1.addSubmenu("Madular");
-	sub1it3.setExecCallback([&ui]() {ui.log("Doamna mirabela"); });
-	sub1it3.setBackCallback([&ui]() {ui.log("Out of mirabela"); });
-	auto& subit3sub1 = sub1it3.addItem("Ce gagica exploziva");
-	subit3sub1.setExecCallback([&ui]() {ui.log("Ati explodad in amor"); });
+	auto sub1it1 = sub1->createItem("Item 1 in Sub 1");
+	sub1it1->setExecCallback([&ui]() {ui.log("Item 1 in submenu 1"); });
+	auto sub1it2 = sub1->createItem("Maciuca");
+	sub1it2->setExecCallback([&ui]() {ui.log("Vai ce madular"); });
+	auto sub1it3 = sub1->createSubmenu("Madular");
+	sub1it3->setExecCallback([&ui]() {ui.log("Doamna mirabela"); });
+	sub1it3->setBackCallback([&ui]() {ui.log("Out of mirabela"); });
+	auto subit3sub1 = sub1it3->createItem("Ce gagica exploziva");
+	subit3sub1->setExecCallback([&ui]() {ui.log("Ati explodad in amor"); });
 
-	auto& subit3sub2 = sub1it3.addItem("E facuta pe masura mea");
-	subit3sub2.setExecCallback([&ui]() {ui.log("E frumoasa nebuna"); });
+	auto subit3sub2 = sub1it3->createItem("E facuta pe masura mea");
+	subit3sub2->setExecCallback([&ui]() {ui.log("E frumoasa nebuna"); });
 	
-	auto& dyn1 = menu->addItem("Dyn 1");
-	dyn1.setUpdateCallback([&counter]() { 
+	auto dyn1 = menu->createItem("Dyn 1");
+	dyn1->setUpdateCallback([&counter]() { 
 		return std::to_string(counter); 
 	});
 
@@ -80,7 +80,7 @@ int main()
 	{
 		if (isDirty)
 		{
-			dyn1.update();
+			dyn1->update();
 			isDirty = false;
 		}
 	});

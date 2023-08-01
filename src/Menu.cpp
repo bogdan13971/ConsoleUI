@@ -11,24 +11,24 @@ Menu::Menu()
 Menu::~Menu()
 {}
 
-Item& Menu::addItem(std::string&& label, const Item::ExecCallback& execCB)
+ItemHandle Menu::createItem(std::string&& label, const Item::ExecCallback& execCB)
 {
-	return root->addItem(std::move(label), execCB);
+	return root->createItem(std::move(label), execCB);
 }
 
-Item& Menu::addItem(std::string&& label, const Item::ExecCallback& execCB, const Item::UpdateCallback& updateCB)
+ItemHandle Menu::createItem(std::string&& label, const Item::ExecCallback& execCB, const Item::UpdateCallback& updateCB)
 {
-	return root->addItem(std::move(label), execCB, updateCB);
+	return root->createItem(std::move(label), execCB, updateCB);
 }
 
-SubMenu& Menu::addSubmenu(std::string&& label, const Item::ExecCallback& execCB)
+SubMenuHandle Menu::createSubmenu(std::string&& label, const Item::ExecCallback& execCB)
 {
-	return root->addSubmenu(std::move(label), execCB);
+	return root->createSubmenu(std::move(label), execCB);
 }
 
-SubMenu& Menu::addSubmenu(std::string&& label, const Item::ExecCallback& execCB, const Item::UpdateCallback& updateCB, const SubMenu::BackCallback& backCB)
+SubMenuHandle Menu::createSubmenu(std::string&& label, const Item::ExecCallback& execCB, const Item::UpdateCallback& updateCB, const SubMenu::BackCallback& backCB)
 {
-	return root->addSubmenu(std::move(label), execCB, updateCB, backCB);
+	return root->createSubmenu(std::move(label), execCB, updateCB, backCB);
 }
 
 void Menu::registerToMenu(SubMenu& submenu)

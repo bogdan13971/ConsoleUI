@@ -44,11 +44,13 @@ public:
 	void moveDown() const;
 	void back() const;
 
-	Item& addItem(std::string&&, const ExecCallback& = NO_OP_CB);
-	Item& addItem(std::string&&, const ExecCallback&, const UpdateCallback&);
-	SubMenu& addSubmenu(std::string&&, const ExecCallback& = NO_OP_CB);
-	SubMenu& addSubmenu(std::string&&, const ExecCallback&, const UpdateCallback&, const BackCallback& = NO_OP_CB);
+	ItemHandle createItem(std::string&&, const ExecCallback& = NO_OP_CB);
+	ItemHandle createItem(std::string&&, const ExecCallback&, const UpdateCallback&);
+	SubMenuHandle createSubmenu(std::string&&, const ExecCallback& = NO_OP_CB);
+	SubMenuHandle createSubmenu(std::string&&, const ExecCallback&, const UpdateCallback&, const BackCallback& = NO_OP_CB);
 	
+	SubMenu& addItem(std::string&&, const ExecCallback & = NO_OP_CB);
+
 	Item& getSelected();
 	std::vector<std::reference_wrapper<Item>> getItems();
 	size_t numberOfItems() const;
