@@ -112,7 +112,7 @@ void SubMenu::back() const
 ItemHandle SubMenu::createItem(std::string&& label, const ExecCallback& execCB)
 {
 	items.push_back(std::make_unique<Item>(std::move(label), execCB));
-	return { items.back() };
+	return make_non_owning<Item>(items.back());
 }
 
 ItemHandle SubMenu::createItem(std::string&& label, const ExecCallback& execCB, const UpdateCallback& updateCB)
@@ -125,7 +125,7 @@ ItemHandle SubMenu::createItem(std::string&& label, const ExecCallback& execCB, 
 SubMenuHandle SubMenu::createSubmenu(std::string&& label, const ExecCallback& execCB)
 {
 	items.push_back(std::make_unique<SubMenu>(menu, std::move(label), execCB));
-	return { items.back() };
+	return make_non_owning<SubMenu>(items.back());
 }
 
 SubMenuHandle SubMenu::createSubmenu(std::string&& label, const ExecCallback& execCB, const UpdateCallback& updateCB, const SubMenu::BackCallback& backCB)

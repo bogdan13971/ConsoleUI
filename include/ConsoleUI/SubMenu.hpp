@@ -4,8 +4,13 @@
 #include <vector>
 #include <stack>
 
+#include "../utils/non_owning_ptr.hpp"
+
 namespace ui
 {
+
+using ItemHandle = non_owning_ptr<Item>;
+using SubMenuHandle = non_owning_ptr<SubMenu>;
 
 class Menu;
 

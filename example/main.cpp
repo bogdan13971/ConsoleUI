@@ -68,6 +68,11 @@ int main()
 		return std::to_string(counter); 
 	});
 
+	auto& a = sub1->addItem("Another item")
+		.addItem("Yet another one")
+		.addItem("And anoterh one")
+		.createSubmenu("hello")->addItem("myes");
+
 	menu->setPosition(3, 0);
 
 	ui.title = &title;
