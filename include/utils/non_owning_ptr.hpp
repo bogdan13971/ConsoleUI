@@ -42,6 +42,16 @@ public:
 		return ptr;
 	}
 
+	T& operator*()
+	{
+		return *ptr;
+	}
+
+	const T& operator*() const
+	{
+		return *ptr;
+	}
+
 public:
 	template<class U>
 	friend non_owning_ptr<T> make_non_owning(const std::unique_ptr<U>&);

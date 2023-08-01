@@ -52,8 +52,6 @@ public:
 	non_owning_ptr<SubMenu> createSubmenu(std::string&&, const ExecCallback& = NO_OP_CB);
 	non_owning_ptr<SubMenu> createSubmenu(std::string&&, const ExecCallback&, const UpdateCallback&, const BackCallback& = NO_OP_CB);
 	
-	SubMenu& addItem(std::string&&, const ExecCallback & = NO_OP_CB);
-
 	Item& getSelected();
 	std::vector<std::reference_wrapper<Item>> getItems();
 	size_t numberOfItems() const;

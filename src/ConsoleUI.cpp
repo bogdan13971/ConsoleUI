@@ -13,7 +13,9 @@ using namespace ui;
 ConsoleUI::ConsoleUI()
 	: updateCallback{ []() {} },
 	isAlive{ true },
-	consoleLog{std::make_unique<ConsoleLog>()}
+	consoleLog{std::make_unique<ConsoleLog>()},
+	title{nullptr},
+	helper{nullptr}
 {
 	int height, width;
 	std::tie(height, width) = getViewportSize();
@@ -55,10 +57,22 @@ void ConsoleUI::render()
 	//reset cursor instead of full clear to fix blinking
 	std::cout << RESET_CURSOR;
 
-	title->moveToCoords();
+	if (title)
+	{
+		title->moveToCoords();
+	}
+
 	menu->moveToCoords();
-	consoleLog->moveToCoords();
-	helper->moveToCoords();
+
+	if (consoleLog)
+	{
+		consoleLog->moveToCoords();
+	}
+
+	if (helper)
+	{
+		helper->moveToCoords();
+	}
 
 	std::cout << HIDE_CURSOR;
 }

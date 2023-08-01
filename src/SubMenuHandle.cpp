@@ -92,11 +92,6 @@ SubMenuHandle SubMenuHandle::createSubmenu(std::string&& label, const ExecCallba
 	return impl->createSubmenu(std::move(label), execCB, updateCB, backCB);
 }
 
-SubMenu& SubMenuHandle::addItem(std::string&& label, const ExecCallback& execCB)
-{
-	return impl->addItem(std::move(label), execCB);
-}
-
 Item& SubMenuHandle::getSelected()
 {
 	return impl->getSelected();

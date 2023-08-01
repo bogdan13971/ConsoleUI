@@ -12,8 +12,6 @@ private:
 	std::shared_ptr<SubMenu> root;
 	std::stack<SubMenu*> history;
 
-	void registerToMenu(SubMenu&);
-
 public:
 	Menu();
 	~Menu();

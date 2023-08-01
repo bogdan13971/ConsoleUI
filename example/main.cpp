@@ -4,10 +4,35 @@
 #include <sstream>
 #include <conio.h>
 
-using namespace ui;
+#include <utils/MenuBuilder.hpp>
+
+void testBuilder()
+{
+	using namespace ui;
+
+	MenuBuilder builder;
+	auto menu = builder.addItem("Item1")
+			.addItem("Item2")
+			.addSubmenu("Sub1").addItem("Item3")
+								.addSubmenu("Sub2").addItem("Item4")
+								.endSubmenu()
+								.addItem("Item5")
+			.endSubmenu()
+			.addItem("Item6")
+			.endSubmenu()
+		.build();
+
+	ConsoleUI ui;
+	auto list = std::make_unique<EventListener>();
+	ui.setMenu(std::move(menu));
+	ui.setEventListener(std::move(list));
+	ui.start();
+}
 
 int main()
 {
+	testBuilder();
+
 	using namespace ui;
 
 	std::cout << ALTERNATE_BUFFER;
@@ -67,11 +92,6 @@ int main()
 	dyn1->setUpdateCallback([&counter]() { 
 		return std::to_string(counter); 
 	});
-
-	auto& a = sub1->addItem("Another item")
-		.addItem("Yet another one")
-		.addItem("And anoterh one")
-		.createSubmenu("hello")->addItem("myes");
 
 	menu->setPosition(3, 0);
 

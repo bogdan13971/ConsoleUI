@@ -31,21 +31,6 @@ non_owning_ptr<SubMenu> Menu::createSubmenu(std::string&& label, const ExecCallb
 	return root->createSubmenu(std::move(label), execCB, updateCB, backCB);
 }
 
-void Menu::registerToMenu(SubMenu& submenu)
-{
-	submenu.setExecCallback([&, cb = submenu.getExecCallback()]() 
-	{
-		history.push(&submenu); 
-		cb(); 
-	});
-
-	submenu.setBackCallback([&, cb = submenu.getBackCallback()]()
-	{
-		cb(); 
-		history.pop(); 
-	});
-}
-
 void Menu::moveToCoords() const
 {
 	Component::moveToCoords();
@@ -60,7 +45,10 @@ void Menu::addToHistory(SubMenu& submenu)
 
 void Menu::removeFromHistory()
 {
-	history.pop();
+	if (history.size() != 1)
+	{
+		history.pop();
+	}
 }
 
 void Menu::execute() const

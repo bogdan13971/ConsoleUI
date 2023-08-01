@@ -138,12 +138,6 @@ non_owning_ptr<SubMenu> SubMenu::createSubmenu(std::string&& label, const ExecCa
 	return submenu;
 }
 
-SubMenu& SubMenu::addItem(std::string&& label, const ExecCallback& execCB)
-{
-	createItem(std::move(label), execCB);
-	return *this;
-}
-
 Item& SubMenu::getSelected()
 {
 	return *(items[selected]);
