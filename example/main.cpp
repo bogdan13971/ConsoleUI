@@ -1,6 +1,6 @@
 #include <ConsoleUI/ConsoleUI.hpp>
 #include <ConsoleUI/ConsoleCommands.hpp>
-#include <ConsoleUI/Component.hpp>
+#include <ConsoleUI/UIComponent.hpp>
 #include <sstream>
 #include <conio.h>
 
@@ -9,6 +9,8 @@
 void testBuilder()
 {
 	using namespace ui;
+
+	ConsoleUI ui;
 
 	MenuBuilder builder;
 	auto menu = builder.addItem("Item1")
@@ -22,35 +24,29 @@ void testBuilder()
 			.endSubmenu()
 		.build();
 
-	ConsoleUI ui;
+	auto container = UIContainer::createSimple("Simple title", std::move(menu));
 	auto list = std::make_unique<EventListener>();
-	ui.setMenu(std::move(menu));
+	
+	ui.setContainer(std::move(container));
 	ui.setEventListener(std::move(list));
+
 	ui.start();
 }
 
 int main()
 {
-	testBuilder();
+	//testBuilder();
 
 	using namespace ui;
-
-	std::cout << ALTERNATE_BUFFER;
 
 	int width, height;
 	std::tie(height, width) = getViewportSize();
 
-	Title title("Cel mai smecher titlu");
-	title.setPosition(0, width / 2 - 11);
+	auto title = std::make_unique<Title>("Sample title");
 
-	//title.print();
-
-	Helper helper;
-	helper.setPosition(height - 2, 0);
-	helper.addHelper("<-", "left");
-	helper.addHelper("->", "right");
-
-	//helper.print();
+	auto helper = std::make_unique<Helper>();
+	helper->addHelper("i", "increment");
+	helper->addHelper("j", "log");
 
 	int counter = 1;
 	bool isDirty = false;
@@ -95,10 +91,14 @@ int main()
 
 	menu->setPosition(3, 0);
 
-	ui.title = &title;
-	ui.helper = &helper;
+	auto container = std::make_unique<UIContainer>(
+		std::move(title),
+		std::move(menu),
+		std::make_unique<ConsoleLog>(),
+		std::move(helper)
+	);
 
-	ui.setMenu(std::move(menu));
+	ui.setContainer(std::move(container));
 	ui.setEventListener(std::move(eventListener));
 
 	ui.setUpdateCallback([&]() 

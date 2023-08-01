@@ -32,9 +32,9 @@ SubMenuHandle Menu::createSubmenu(std::string&& label, const ExecCallback& execC
 	return root->createSubmenu(std::move(label), execCB, updateCB, backCB);
 }
 
-void Menu::moveToCoords() const
+void Menu::print() const
 {
-	Component::moveToCoords();
+	UIComponent::print();
 
 	history.top()->printItems();
 }
@@ -100,4 +100,43 @@ std::vector<SubMenu*> Menu::getParents()
 		std::back_inserter(parents));
 
 	return parents;
+}
+
+ConsoleLog::ConsoleLog()
+	: ConsoleLog{ 10 }
+{}
+
+ConsoleLog::ConsoleLog(unsigned char maxLines)
+	:maxLines{ maxLines }
+{}
+
+void ConsoleLog::setMaxLines(unsigned char maxLines)
+{
+	this->maxLines = maxLines;
+}
+
+void ConsoleLog::addLine(std::string&& line)
+{
+	lines.push_back(std::move(line));
+
+	if (lines.size() > maxLines)
+	{
+		lines.pop_front();
+	}
+}
+
+void ConsoleLog::clear()
+{
+	lines.clear();
+}
+
+void ConsoleLog::print() const
+{
+	std::cout << CLEAR_TO_END;
+	std::cout << moveCursor(row - lines.size());
+
+	for (const auto& line : lines)
+	{
+		std::cout << line << "\n";
+	}
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stack>
-#include "Component.hpp"
+#include "UIComponent.hpp"
 #include "../utils/types.hpp"
 #include "../utils/non_owning_ptr.hpp"
 #include "SubMenuHandle.hpp"
@@ -12,7 +12,7 @@ namespace ui
 class Item;
 class SubMenu;
 
-class Menu : public Component
+class Menu : public UIComponent
 {
 private:
 	std::shared_ptr<SubMenu> root;
@@ -27,7 +27,7 @@ public:
 	SubMenuHandle createSubmenu(std::string&&, const ExecCallback& = NO_OP_CB);
 	SubMenuHandle createSubmenu(std::string&&, const ExecCallback&, const UpdateCallback&, const BackCallback& = NO_OP_CB);
 
-	void moveToCoords() const override;
+	void print() const override;
 
 	void addToHistory(SubMenu&);
 	void removeFromHistory();

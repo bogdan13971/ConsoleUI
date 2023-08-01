@@ -4,21 +4,15 @@
 
 #include "Menu.hpp"
 #include "EventListener.hpp"
+#include "UIContainer.hpp"
 
 namespace ui
 {
 
-class ConsoleLog;
-
 class ConsoleUI
 {
-public:
-	Title* title;
-	Helper* helper;
-	std::unique_ptr<ConsoleLog> consoleLog;
-
 private:
-	std::unique_ptr<Menu> menu;
+	std::unique_ptr<UIContainer> container;
 	std::unique_ptr<EventListener> eventListener;
 
 	std::function<void()> updateCallback;
@@ -36,7 +30,7 @@ public:
 	ConsoleUI();
 	~ConsoleUI();
 
-	void setMenu(std::unique_ptr<Menu>&&);
+	void setContainer(std::unique_ptr<UIContainer>&&);
 	void setEventListener(std::unique_ptr<EventListener>&&);
 
 	void start();
@@ -44,8 +38,9 @@ public:
 	void log(std::string&&);
 	void clearLog();
 
+	UIContainer& getContainer();
 	Menu& getMenu();
-	EventListener& getEventListener();
+	EventListener& getListener();
 };
 
 }//ui

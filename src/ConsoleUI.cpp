@@ -12,22 +12,15 @@ using namespace ui;
 
 ConsoleUI::ConsoleUI()
 	: updateCallback{ []() {} },
-	isAlive{ true },
-	consoleLog{std::make_unique<ConsoleLog>()},
-	title{nullptr},
-	helper{nullptr}
-{
-	int height, width;
-	std::tie(height, width) = getViewportSize();
-	consoleLog->setPosition(height - 4, 0);
-}
+	isAlive{ true }
+{}
 
 ConsoleUI::~ConsoleUI()
 {}
 
-void ConsoleUI::setMenu(std::unique_ptr<Menu>&& menu)
+void ConsoleUI::setContainer(std::unique_ptr<UIContainer>&& container)
 {
-	this->menu = std::move(menu);
+	this->container = std::move(container);
 }
 
 void ConsoleUI::setEventListener(std::unique_ptr<EventListener>&& eventListener)
@@ -57,21 +50,9 @@ void ConsoleUI::render()
 	//reset cursor instead of full clear to fix blinking
 	std::cout << RESET_CURSOR;
 
-	if (title)
+	if (container)
 	{
-		title->moveToCoords();
-	}
-
-	menu->moveToCoords();
-
-	if (consoleLog)
-	{
-		consoleLog->moveToCoords();
-	}
-
-	if (helper)
-	{
-		helper->moveToCoords();
+		container.get()->print();
 	}
 
 	std::cout << HIDE_CURSOR;
@@ -93,11 +74,11 @@ bool ConsoleUI::handleKeyInput(char key)
 	{
 	case '\r':
 		eventListener->handleEvent(EVENT_TYPE::ENTER);
-		menu->execute();
+		getMenu().execute();
 		return true;
 	case 'x':
 		eventListener->handleEvent(EVENT_TYPE::BACK);
-		menu->back();
+		getMenu().back();
 		return true;
 	case 'q':
 		isAlive = false;
@@ -118,20 +99,20 @@ void ConsoleUI::handleArrowInput(char arrow)
 	{
 	case KEY_UP:
 		eventListener->handleEvent(EVENT_TYPE::UP);
-		menu->moveUp();
+		getMenu().moveUp();
 		break;
 	case KEY_DOWN:
 		eventListener->handleEvent(EVENT_TYPE::DOWN);
-		menu->moveDown();
+		getMenu().moveDown();
 		break;
 	case '\n':
 	case KEY_RIGHT:
 		eventListener->handleEvent(EVENT_TYPE::ENTER);
-		menu->execute();
+		getMenu().execute();
 		break;
 	case KEY_LEFT:
 		eventListener->handleEvent(EVENT_TYPE::BACK);
-		menu->back();
+		getMenu().back();
 		break;
 	default:
 		break;
@@ -168,20 +149,25 @@ void ConsoleUI::start()
 
 void ConsoleUI::log(std::string&& line)
 {
-	consoleLog->addLine(std::move(line));
+	getContainer().getLog().addLine(std::move(line));
 }
 
 void ConsoleUI::clearLog()
 {
-	consoleLog->clear();
+	getContainer().getLog().clear();
+}
+
+UIContainer& ConsoleUI::getContainer()
+{
+	return *(container.get());
 }
 
 Menu& ConsoleUI::getMenu()
 {
-	return *menu;
+	return getContainer().getMenu();
 }
 
-EventListener& ConsoleUI::getEventListener()
+EventListener& ConsoleUI::getListener()
 {
-	return *eventListener;
+	return *(eventListener.get());
 }
