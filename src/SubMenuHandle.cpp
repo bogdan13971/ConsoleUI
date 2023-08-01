@@ -82,9 +82,9 @@ ItemHandle SubMenuHandle::createItem(std::string&& label, const ExecCallback& ex
 	return impl->createItem(std::move(label), execCB, updateCB);
 }
 
-SubMenuHandle SubMenuHandle::createSubmenu(std::string&& label, const ExecCallback& execCB)
+SubMenuHandle SubMenuHandle::createSubmenu(std::string&& label, const ExecCallback& execCB, const BackCallback& backCB)
 {
-	return impl->createSubmenu(std::move(label), execCB);
+	return impl->createSubmenu(std::move(label), execCB, backCB);
 }
 
 SubMenuHandle SubMenuHandle::createSubmenu(std::string&& label, const ExecCallback& execCB, const UpdateCallback& updateCB, const SubMenu::BackCallback& backCB)

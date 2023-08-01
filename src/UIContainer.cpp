@@ -18,7 +18,7 @@ UIContainer::UIContainer(std::unique_ptr<Title>&& title,
 	std::tie(height, width) = getViewportSize();
 
 	this->title->alignToCenter(width);
-	this->menu->setPosition(2, 0);
+	this->menu->setPosition(3, 0);
 	this->log->setPosition(height - 4, 0);
 	this->helper->setPosition(height - 2, 0);
 }

@@ -5,8 +5,10 @@
 using namespace ui;
 using utils::non_owning_ptr;
 
-SubMenu::SubMenu(Menu& menu,std::string&& label, const ExecCallback& execCB)
-	: SubMenu{ menu,std::move(label), execCB, [&]() {return label;}, NO_OP_CB }
+SubMenu::SubMenu(Menu& menu,std::string&& label, 
+	const ExecCallback& execCB,
+	const BackCallback& backCB)
+	: SubMenu{ menu,std::move(label), execCB, [&]() {return label;}, backCB }
 {}
 
 SubMenu::SubMenu(Menu& menu,std::string&& label,
@@ -124,7 +126,7 @@ non_owning_ptr<Item> SubMenu::createItem(std::string&& label, const ExecCallback
 	return item;
 }
 
-non_owning_ptr<SubMenu> SubMenu::createSubmenu(std::string&& label, const ExecCallback& execCB)
+non_owning_ptr<SubMenu> SubMenu::createSubmenu(std::string&& label, const ExecCallback& execCB, const BackCallback& backCB)
 {
 	auto submenu = new SubMenu(menu, std::move(label), execCB);
 	items.push_back(std::unique_ptr<SubMenu>(submenu));
