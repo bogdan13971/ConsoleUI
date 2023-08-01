@@ -9,9 +9,6 @@
 namespace ui
 {
 
-using ItemHandle = non_owning_ptr<Item>;
-using SubMenuHandle = non_owning_ptr<SubMenu>;
-
 class Menu;
 
 class SubMenu : public Item
@@ -25,14 +22,15 @@ private:
 	mutable unsigned short selected;
 	std::vector<std::unique_ptr<Item>> items;
 
-public:
+private:
 	SubMenu(Menu&, std::string&&, const ExecCallback& = NO_OP_CB);
 
 	SubMenu(Menu&, std::string&&,
 		const ExecCallback&,
 		const UpdateCallback&,
 		const BackCallback& = NO_OP_CB);
-	
+
+public:
 	SubMenu(const SubMenu&) = delete;
 	SubMenu& operator=(const SubMenu&) = delete;
 	~SubMenu() = default;
@@ -49,10 +47,10 @@ public:
 	void moveDown() const;
 	void back() const;
 
-	ItemHandle createItem(std::string&&, const ExecCallback& = NO_OP_CB);
-	ItemHandle createItem(std::string&&, const ExecCallback&, const UpdateCallback&);
-	SubMenuHandle createSubmenu(std::string&&, const ExecCallback& = NO_OP_CB);
-	SubMenuHandle createSubmenu(std::string&&, const ExecCallback&, const UpdateCallback&, const BackCallback& = NO_OP_CB);
+	non_owning_ptr<Item> createItem(std::string&&, const ExecCallback& = NO_OP_CB);
+	non_owning_ptr<Item> createItem(std::string&&, const ExecCallback&, const UpdateCallback&);
+	non_owning_ptr<SubMenu> createSubmenu(std::string&&, const ExecCallback& = NO_OP_CB);
+	non_owning_ptr<SubMenu> createSubmenu(std::string&&, const ExecCallback&, const UpdateCallback&, const BackCallback& = NO_OP_CB);
 	
 	SubMenu& addItem(std::string&&, const ExecCallback & = NO_OP_CB);
 

@@ -4,23 +4,19 @@
 #include <iostream>
 #include <string>
 
+#include "../utils/types.hpp"
+
 namespace ui
 {
 
 class Item
 {
-public:
-	using ExecCallback = std::function<void()>;
-	using UpdateCallback = std::function<std::string()>;
-
-	static const ExecCallback NO_OP_CB;
-
 private:
 	std::string label;
 	ExecCallback execCallback;
 	UpdateCallback updateCallback;
 
-public:
+private:
 	Item(std::string&& label,
 		const ExecCallback& execCB = NO_OP_CB)
 		: Item{ std::move(label), execCB, [&]() {return this->label; } }

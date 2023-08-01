@@ -3,7 +3,7 @@
 using namespace ui;
 
 Menu::Menu()
-	: root{std::make_shared<SubMenu>(*this, "root")}
+	: root{new SubMenu(*this, "root")}
 {
 	history.push(root.get());
 }
@@ -11,22 +11,22 @@ Menu::Menu()
 Menu::~Menu()
 {}
 
-ItemHandle Menu::createItem(std::string&& label, const Item::ExecCallback& execCB)
+non_owning_ptr<Item> Menu::createItem(std::string&& label, const ExecCallback& execCB)
 {
 	return root->createItem(std::move(label), execCB);
 }
 
-ItemHandle Menu::createItem(std::string&& label, const Item::ExecCallback& execCB, const Item::UpdateCallback& updateCB)
+non_owning_ptr<Item> Menu::createItem(std::string&& label, const ExecCallback& execCB, const UpdateCallback& updateCB)
 {
 	return root->createItem(std::move(label), execCB, updateCB);
 }
 
-SubMenuHandle Menu::createSubmenu(std::string&& label, const Item::ExecCallback& execCB)
+non_owning_ptr<SubMenu> Menu::createSubmenu(std::string&& label, const ExecCallback& execCB)
 {
 	return root->createSubmenu(std::move(label), execCB);
 }
 
-SubMenuHandle Menu::createSubmenu(std::string&& label, const Item::ExecCallback& execCB, const Item::UpdateCallback& updateCB, const SubMenu::BackCallback& backCB)
+non_owning_ptr<SubMenu> Menu::createSubmenu(std::string&& label, const ExecCallback& execCB, const UpdateCallback& updateCB, const BackCallback& backCB)
 {
 	return root->createSubmenu(std::move(label), execCB, updateCB, backCB);
 }

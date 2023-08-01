@@ -18,10 +18,10 @@ public:
 	Menu();
 	~Menu();
 
-	ItemHandle createItem(std::string&&, const Item::ExecCallback & = Item::NO_OP_CB);
-	ItemHandle createItem(std::string&&, const Item::ExecCallback&, const Item::UpdateCallback&);
-	SubMenuHandle createSubmenu(std::string&&, const Item::ExecCallback & = Item::NO_OP_CB);
-	SubMenuHandle createSubmenu(std::string&&, const Item::ExecCallback&, const Item::UpdateCallback&, const SubMenu::BackCallback & = Item::NO_OP_CB);
+	non_owning_ptr<Item> createItem(std::string&&, const ExecCallback& = NO_OP_CB);
+	non_owning_ptr<Item> createItem(std::string&&, const ExecCallback&, const UpdateCallback&);
+	non_owning_ptr<SubMenu> createSubmenu(std::string&&, const ExecCallback& = NO_OP_CB);
+	non_owning_ptr<SubMenu> createSubmenu(std::string&&, const ExecCallback&, const UpdateCallback&, const BackCallback& = NO_OP_CB);
 
 	void moveToCoords() const override;
 
