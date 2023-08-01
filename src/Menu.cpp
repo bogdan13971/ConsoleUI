@@ -1,4 +1,5 @@
 #include "Menu.hpp"
+#include "SubMenu.hpp"
 
 using namespace ui;
 
@@ -11,22 +12,22 @@ Menu::Menu()
 Menu::~Menu()
 {}
 
-non_owning_ptr<Item> Menu::createItem(std::string&& label, const ExecCallback& execCB)
+ItemHandle Menu::createItem(std::string&& label, const ExecCallback& execCB)
 {
 	return root->createItem(std::move(label), execCB);
 }
 
-non_owning_ptr<Item> Menu::createItem(std::string&& label, const ExecCallback& execCB, const UpdateCallback& updateCB)
+ItemHandle Menu::createItem(std::string&& label, const ExecCallback& execCB, const UpdateCallback& updateCB)
 {
 	return root->createItem(std::move(label), execCB, updateCB);
 }
 
-non_owning_ptr<SubMenu> Menu::createSubmenu(std::string&& label, const ExecCallback& execCB)
+SubMenuHandle Menu::createSubmenu(std::string&& label, const ExecCallback& execCB)
 {
 	return root->createSubmenu(std::move(label), execCB);
 }
 
-non_owning_ptr<SubMenu> Menu::createSubmenu(std::string&& label, const ExecCallback& execCB, const UpdateCallback& updateCB, const BackCallback& backCB)
+SubMenuHandle Menu::createSubmenu(std::string&& label, const ExecCallback& execCB, const UpdateCallback& updateCB, const BackCallback& backCB)
 {
 	return root->createSubmenu(std::move(label), execCB, updateCB, backCB);
 }

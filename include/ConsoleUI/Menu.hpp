@@ -1,10 +1,16 @@
 #pragma once
 
-#include "SubMenu.hpp"
+#include <stack>
 #include "Component.hpp"
+#include "../utils/types.hpp"
+#include "../utils/non_owning_ptr.hpp"
+#include "SubMenuHandle.hpp"
 
 namespace ui
 {
+
+class Item;
+class SubMenu;
 
 class Menu : public Component
 {
@@ -16,10 +22,10 @@ public:
 	Menu();
 	~Menu();
 
-	non_owning_ptr<Item> createItem(std::string&&, const ExecCallback& = NO_OP_CB);
-	non_owning_ptr<Item> createItem(std::string&&, const ExecCallback&, const UpdateCallback&);
-	non_owning_ptr<SubMenu> createSubmenu(std::string&&, const ExecCallback& = NO_OP_CB);
-	non_owning_ptr<SubMenu> createSubmenu(std::string&&, const ExecCallback&, const UpdateCallback&, const BackCallback& = NO_OP_CB);
+	ItemHandle createItem(std::string&&, const ExecCallback& = NO_OP_CB);
+	ItemHandle createItem(std::string&&, const ExecCallback&, const UpdateCallback&);
+	SubMenuHandle createSubmenu(std::string&&, const ExecCallback& = NO_OP_CB);
+	SubMenuHandle createSubmenu(std::string&&, const ExecCallback&, const UpdateCallback&, const BackCallback& = NO_OP_CB);
 
 	void moveToCoords() const override;
 

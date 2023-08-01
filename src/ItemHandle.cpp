@@ -3,7 +3,7 @@
 
 using namespace ui;
 
-ItemHandle::ItemHandle(const non_owning_ptr<Item>& impl)
+ItemHandle::ItemHandle(const utils::non_owning_ptr<Item>& impl)
 	:impl{impl}
 {}
 

@@ -3,7 +3,7 @@
 
 using namespace ui;
 
-SubMenuHandle::SubMenuHandle(const non_owning_ptr<SubMenu>& impl)
+SubMenuHandle::SubMenuHandle(const utils::non_owning_ptr<SubMenu>& impl)
 	:impl{ impl }
 {}
 

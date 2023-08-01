@@ -3,6 +3,7 @@
 #include "Menu.hpp"
 
 using namespace ui;
+using utils::non_owning_ptr;
 
 SubMenu::SubMenu(Menu& menu,std::string&& label, const ExecCallback& execCB)
 	: SubMenu{ menu,std::move(label), execCB, [&]() {return label;}, NO_OP_CB }
@@ -113,7 +114,7 @@ non_owning_ptr<Item> SubMenu::createItem(std::string&& label, const ExecCallback
 {
 	auto item = new Item(std::move(label), execCB);
 	items.push_back(std::unique_ptr<Item>(item));
-	return make_non_owning<Item>(items.back());
+	return items.back().get();
 }
 
 non_owning_ptr<Item> SubMenu::createItem(std::string&& label, const ExecCallback& execCB, const UpdateCallback& updateCB)
@@ -127,7 +128,7 @@ non_owning_ptr<SubMenu> SubMenu::createSubmenu(std::string&& label, const ExecCa
 {
 	auto submenu = new SubMenu(menu, std::move(label), execCB);
 	items.push_back(std::unique_ptr<SubMenu>(submenu));
-	return make_non_owning<SubMenu>(items.back());
+	return dynamic_cast<SubMenu*>(items.back().get());
 }
 
 non_owning_ptr<SubMenu> SubMenu::createSubmenu(std::string&& label, const ExecCallback& execCB, const UpdateCallback& updateCB, const SubMenu::BackCallback& backCB)

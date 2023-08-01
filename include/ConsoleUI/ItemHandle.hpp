@@ -11,13 +11,13 @@ class Item;
 class ItemHandle
 {
 private:
-	non_owning_ptr<Item> impl;
+	utils::non_owning_ptr<Item> impl;
 
 private:
 	ItemHandle() = delete;
 
 public:
-	ItemHandle(const non_owning_ptr<Item>& impl);
+	ItemHandle(const utils::non_owning_ptr<Item>& impl);
 
 	void print() const;
 

@@ -16,7 +16,7 @@ private:
 	ExecCallback execCallback;
 	UpdateCallback updateCallback;
 
-private:
+public:
 	Item(std::string&& label,
 		const ExecCallback& execCB = NO_OP_CB)
 		: Item{ std::move(label), execCB, [&]() {return this->label; } }
@@ -30,7 +30,6 @@ private:
 		updateCallback{updateCB}
 	{};
 
-public:
 	Item(const Item&) = delete;
 	Item& operator=(const Item&) = delete;
 

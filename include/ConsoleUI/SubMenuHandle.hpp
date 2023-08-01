@@ -13,13 +13,13 @@ class SubMenu;
 class SubMenuHandle
 {
 private:
-	non_owning_ptr<SubMenu> impl;
+	utils::non_owning_ptr<SubMenu> impl;
 
 private:
 	SubMenuHandle() = delete;
 
 public:
-	SubMenuHandle(const non_owning_ptr<SubMenu>& impl);
+	SubMenuHandle(const utils::non_owning_ptr<SubMenu>& impl);
 
 	void print() const;
 
