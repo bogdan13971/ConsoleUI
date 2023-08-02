@@ -37,7 +37,7 @@ void SubMenu::execute()
 
 	menu.addToHistory(*this);
 
-	std::cout << CLEAR_SCREEN;
+	executeCommand(CVTCommand::CLEAR_SCREEN);
 }
 
 void SubMenu::update()
@@ -54,18 +54,18 @@ void SubMenu::printItems() const
 {
 	for (size_t i = 0; i < items.size(); i++)
 	{
-		std::cout << CLEAR_LINE;
+		executeCommand(CVTCommand::CLEAR_LINE);
 
 		if (i == selected)
 		{
-			std::cout << SET_FORMAT;
+			executeCommand(CVTCommand::SET_FORMAT);
 		}
 
 		items[i]->print();
 
 		if (i == selected)
 		{
-			std::cout << CLEAR_FORMAT;
+			executeCommand(CVTCommand::CLEAR_FORMAT);
 		}
 	}
 
@@ -107,7 +107,7 @@ void SubMenu::back() const
 	backCallback();
 
 	selected = 0;
-	std::cout << CLEAR_SCREEN;
+	executeCommand(CVTCommand::CLEAR_SCREEN);
 
 	menu.removeFromHistory();
 }

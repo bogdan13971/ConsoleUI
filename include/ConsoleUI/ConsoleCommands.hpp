@@ -2,24 +2,51 @@
 
 #include <conio.h>
 #include <array>
+#include <iostream>
+#include <unordered_map>
 
 namespace ui
 {
 	//Console Virtual Terminal size type
 	using VTSizeType = unsigned short;
 
-	constexpr auto SET_FORMAT		= "\033[30;47m";
-	constexpr auto CLEAR_FORMAT		= "\033[0m";
-	constexpr auto CLEAR_SCREEN		= "\033[2J";
-	constexpr auto CLEAR_LINE		= "\033[0K";
-	constexpr auto ALTERNATE_BUFFER	= "\033[?1049h";
-	constexpr auto MAIN_BUFFER		= "\033[?1049l";
-	constexpr auto HIDE_CURSOR		= "\033[?25l";
-	constexpr auto SHOW_CURSOR		= "\033[?25h";
-	constexpr auto RESET_CURSOR		= "\033[0;0H";
-	constexpr auto CLEAR_TO_END		= "\033[0J";
-	constexpr auto CURSOR_POSITION  = "\033[6n";
-	constexpr auto BOLD_FORMAT      = "\033[1m";
+	enum class CVTCommand
+	{
+		SET_FORMAT,
+		CLEAR_FORMAT,
+		CLEAR_SCREEN,
+		CLEAR_LINE,
+		ALTERNATE_BUFFER,
+		MAIN_BUFFER,
+		HIDE_CURSOR,
+		SHOW_CURSOR,
+		RESET_CURSOR,
+		CLEAR_TO_END,
+		CURSOR_POSITION,
+		BOLD_FORMAT
+	};
+
+	static const std::unordered_map<CVTCommand, std::string> CommandOPCode =
+	{
+		{CVTCommand::SET_FORMAT,		"\033[30;47m"},
+		{CVTCommand::CLEAR_FORMAT,		"\033[0m"},
+		{CVTCommand::CLEAR_SCREEN,		"\033[0K"},
+		{CVTCommand::CLEAR_LINE,		"\033[?1049h"},
+		{CVTCommand::ALTERNATE_BUFFER,	"\033[?1049h"},
+		{CVTCommand::MAIN_BUFFER,		"\033[?1049l"},
+		{CVTCommand::HIDE_CURSOR,		"\033[?25l"},
+		{CVTCommand::SHOW_CURSOR,		"\033[?25h"},
+		{CVTCommand::RESET_CURSOR,		"\033[0;0H"},
+		{CVTCommand::CLEAR_TO_END,		"\033[0J"},
+		{CVTCommand::CURSOR_POSITION,	"\033[6n"},
+		{CVTCommand::BOLD_FORMAT,		"\033[1m"}
+	};
+
+	//Executes the command by printing it to the current terminal
+	inline void executeCommand(CVTCommand command)
+	{
+		std::cout << CommandOPCode.at(command);
+	}
 
 	//Compile-time generation of the Virtual Terminal Command to move cursor at (row, col)
 	constexpr std::array<char, 11> generateMoveCursorCommand(VTSizeType row, VTSizeType col)
@@ -54,7 +81,7 @@ namespace ui
 		std::pair<VTSizeType, VTSizeType> viewportSize = { 0, 0 };
 
 		moveCursor(999, 999);
-		std::cout << CURSOR_POSITION;
+		executeCommand(CVTCommand::CURSOR_POSITION);
 
 		char buffer[10] = { 0 };
 		int pos = 0;
@@ -78,7 +105,7 @@ namespace ui
 		int width = 0;
 		int height = 0;
 
-		std::cout << ui::RESET_CURSOR;
+		executeCommand(CVTCommand::RESET_CURSOR);
 		if (sscanf_s(buffer, "[%d;%d", &width, &height) == 2)
 		{
 			viewportSize.first = static_cast<VTSizeType>(width);

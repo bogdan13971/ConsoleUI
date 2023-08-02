@@ -30,9 +30,9 @@ void ConsoleUI::setEventListener(std::unique_ptr<EventListener>&& eventListener_
 
 void ConsoleUI::init()
 {
-	std::cout << ALTERNATE_BUFFER;
-	std::cout << HIDE_CURSOR;
-	std::cout << RESET_CURSOR;
+	executeCommand(CVTCommand::ALTERNATE_BUFFER);
+	executeCommand(CVTCommand::HIDE_CURSOR);
+	executeCommand(CVTCommand::RESET_CURSOR);
 
 	eventListener->handleEvent(EVENT_TYPE::START);
 }
@@ -41,21 +41,21 @@ void ConsoleUI::exit()
 {
 	eventListener->handleEvent(EVENT_TYPE::EXIT);
 	
-	std::cout << SHOW_CURSOR;
-	std::cout << MAIN_BUFFER;
+	executeCommand(CVTCommand::SHOW_CURSOR);
+	executeCommand(CVTCommand::MAIN_BUFFER);
 }
 
 void ConsoleUI::render()
 {
 	//reset cursor instead of full clear to fix blinking
-	std::cout << RESET_CURSOR;
+	executeCommand(CVTCommand::RESET_CURSOR);
 
 	if (container)
 	{
 		container.get()->print();
 	}
 
-	std::cout << HIDE_CURSOR;
+	executeCommand(CVTCommand::HIDE_CURSOR);
 }
 
 void ConsoleUI::update()

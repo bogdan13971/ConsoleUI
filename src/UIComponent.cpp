@@ -20,9 +20,9 @@ Title::Title(std::string&& label)
 void Title::print() const
 {
 	UIComponent::print();
-	std::cout << BOLD_FORMAT;
+	executeCommand(CVTCommand::BOLD_FORMAT);
 	std::cout << label;
-	std::cout << CLEAR_FORMAT;
+	executeCommand(CVTCommand::CLEAR_FORMAT);
 }
 
 void Title::alignToCenter(VTSizeType width)
