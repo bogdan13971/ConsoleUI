@@ -45,13 +45,9 @@ namespace ui
 		std::cout << generateMoveCursorCommand(rows, cols).data();
 	}
 
-	/**
-	 * @brief Compute the console virtual terminal viewport size
-	 * @return pair of width - height
-	*/
 	inline std::pair<VTSizeType, VTSizeType> getViewportSize()
 	{
-		std::pair<VTSizeType, VTSizeType> viewportSize = { 0, 0 };
+		std::pair<VTSizeType, VTSizeType> viewportSize;
 
 		moveCursor(999, 999);
 		std::cout << CURSOR_POSITION;

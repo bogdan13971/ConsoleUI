@@ -10,7 +10,7 @@ void UIComponent::setPosition(VTSizeType row_, VTSizeType col_)
 
 void UIComponent::print() const
 {
-	std::cout << moveCursor(row, col);
+	moveCursor(row, col);
 }
 
 Title::Title(std::string&& label)
@@ -27,7 +27,7 @@ void Title::print() const
 
 void Title::alignToCenter(VTSizeType width)
 {
-	setPosition(0, (width - static_cast<VTSizeType>(label.size()) / 2));
+	setPosition(0, (width - static_cast<VTSizeType>(label.size())) / 2);
 }
 
 Helper::Helper()
@@ -80,12 +80,12 @@ void Helper::print() const
 	{
 		if (index == 0)
 		{
-			std::cout << moveCursor(row + lineRow, 
+			moveCursor(row + lineRow, 
 									padding / 2 - static_cast<VTSizeType>(pair.first.size()));
 		}
 		else
 		{
-			std::cout << moveCursor(row + lineRow, 
+			moveCursor(row + lineRow, 
 									padding / 2 + padding * index - static_cast<VTSizeType>(pair.first.size()));
 		}
 

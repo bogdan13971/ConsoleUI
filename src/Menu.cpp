@@ -133,7 +133,7 @@ void ConsoleLog::clear()
 void ConsoleLog::print() const
 {
 	std::cout << CLEAR_TO_END;
-	std::cout << moveCursor(row - static_cast<VTSizeType>(lines.size()), 0);
+	moveCursor(row - static_cast<VTSizeType>(lines.size()), 0);
 
 	for (const auto& line : lines)
 	{
