@@ -12,17 +12,17 @@
 //{
 //private:
 //	std::list<std::string> lines;
-//	unsigned char maxLines;
+//	VTSizeType maxLines;
 //
 //public:
 //	ConsoleLog()
 //		: ConsoleLog{ 10 }
 //	{}
-//	ConsoleLog(unsigned char maxLines)
+//	ConsoleLog(VTSizeType maxLines)
 //		:maxLines{ maxLines }
 //	{}
 //
-//	inline void setMaxLines(unsigned char maxLines)
+//	inline void setMaxLines(VTSizeType maxLines)
 //	{
 //		this->maxLines = maxLines;
 //	}

@@ -2,8 +2,8 @@
 
 #include <stack>
 #include "UIComponent.hpp"
-#include "../utils/types.hpp"
-#include "../utils/non_owning_ptr.hpp"
+#include <utils/types.hpp>
+#include <utils/non_owning_ptr.hpp>
 #include "SubMenuHandle.hpp"
 
 namespace ui

@@ -106,13 +106,13 @@ ConsoleLog::ConsoleLog()
 	: ConsoleLog{ 10 }
 {}
 
-ConsoleLog::ConsoleLog(unsigned char maxLines)
-	:maxLines{ maxLines }
+ConsoleLog::ConsoleLog(VTSizeType maxLines_)
+	:maxLines{ maxLines_ }
 {}
 
-void ConsoleLog::setMaxLines(unsigned char maxLines)
+void ConsoleLog::setMaxLines(VTSizeType maxLines_)
 {
-	this->maxLines = maxLines;
+	maxLines = maxLines_;
 }
 
 void ConsoleLog::addLine(std::string&& line)
@@ -133,7 +133,7 @@ void ConsoleLog::clear()
 void ConsoleLog::print() const
 {
 	std::cout << CLEAR_TO_END;
-	std::cout << moveCursor(row - lines.size());
+	std::cout << moveCursor(row - static_cast<VTSizeType>(lines.size()), 0);
 
 	for (const auto& line : lines)
 	{

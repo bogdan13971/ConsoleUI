@@ -112,30 +112,30 @@ void SubMenu::back() const
 	menu.removeFromHistory();
 }
 
-non_owning_ptr<Item> SubMenu::createItem(std::string&& label, const ExecCallback& execCB)
+non_owning_ptr<Item> SubMenu::createItem(std::string&& label_, const ExecCallback& execCB)
 {
-	auto item = new Item(std::move(label), execCB);
+	auto item = new Item(std::move(label_), execCB);
 	items.push_back(std::unique_ptr<Item>(item));
 	return items.back().get();
 }
 
-non_owning_ptr<Item> SubMenu::createItem(std::string&& label, const ExecCallback& execCB, const UpdateCallback& updateCB)
+non_owning_ptr<Item> SubMenu::createItem(std::string&& label_, const ExecCallback& execCB, const UpdateCallback& updateCB)
 {
-	auto item = createItem(std::move(label), execCB);
+	auto item = createItem(std::move(label_), execCB);
 	item->setUpdateCallback(updateCB);
 	return item;
 }
 
-non_owning_ptr<SubMenu> SubMenu::createSubmenu(std::string&& label, const ExecCallback& execCB, const BackCallback& backCB)
+non_owning_ptr<SubMenu> SubMenu::createSubmenu(std::string&& label_, const ExecCallback& execCB, const BackCallback& backCB)
 {
-	auto submenu = new SubMenu(menu, std::move(label), execCB);
+	auto submenu = new SubMenu(menu, std::move(label_), execCB, backCB);
 	items.push_back(std::unique_ptr<SubMenu>(submenu));
 	return dynamic_cast<SubMenu*>(items.back().get());
 }
 
-non_owning_ptr<SubMenu> SubMenu::createSubmenu(std::string&& label, const ExecCallback& execCB, const UpdateCallback& updateCB, const SubMenu::BackCallback& backCB)
+non_owning_ptr<SubMenu> SubMenu::createSubmenu(std::string&& label_, const ExecCallback& execCB, const UpdateCallback& updateCB, const SubMenu::BackCallback& backCB)
 {
-	auto submenu = createSubmenu(std::move(label), execCB);
+	auto submenu = createSubmenu(std::move(label_), execCB);
 	submenu->setUpdateCallback(updateCB);
 	submenu->setBackCallback(backCB);
 	return submenu;

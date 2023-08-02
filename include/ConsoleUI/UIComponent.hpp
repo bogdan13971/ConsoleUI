@@ -12,11 +12,12 @@ namespace ui
 class UIComponent
 {
 protected:
-	unsigned char row = 0;
-	unsigned char col = 0;
+	VTSizeType row = 0;
+	VTSizeType col = 0;
 
 public:
-	void setPosition(unsigned char row, unsigned char col);
+	~UIComponent() = default;
+	void setPosition(VTSizeType row, VTSizeType col);
 	virtual void print() const;
 };
 
@@ -30,15 +31,15 @@ public:
 
 	void print() const override;
 
-	void alignToCenter(unsigned char width);
+	void alignToCenter(VTSizeType width);
 };
 
 class Helper : public UIComponent
 {
 private:
 	std::unordered_map<std::string, std::string> helpers;
-	unsigned char padding;
-	unsigned char maxTab;
+	VTSizeType padding;
+	VTSizeType maxTab;
 	bool isActive;
 
 public:
@@ -46,9 +47,9 @@ public:
 
 	void addHelper(const std::string& key, const std::string& command);
 
-	void setMaxTab(unsigned char maxTab);
+	void setMaxTab(VTSizeType maxTab);
 
-	void setPadding(unsigned char padding);
+	void setPadding(VTSizeType padding);
 
 	void toggle();
 
@@ -59,14 +60,14 @@ class ConsoleLog : public UIComponent
 {
 private:
 	std::list<std::string> lines;
-	unsigned char maxLines;
+	VTSizeType maxLines;
 
 public:
 	ConsoleLog();
 
-	ConsoleLog(unsigned char maxLines);
+	ConsoleLog(VTSizeType maxLines);
 
-	void setMaxLines(unsigned char maxLines);
+	void setMaxLines(VTSizeType maxLines);
 
 	void addLine(std::string&& line);
 

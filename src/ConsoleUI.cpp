@@ -18,14 +18,14 @@ ConsoleUI::ConsoleUI()
 ConsoleUI::~ConsoleUI()
 {}
 
-void ConsoleUI::setContainer(std::unique_ptr<UIContainer>&& container)
+void ConsoleUI::setContainer(std::unique_ptr<UIContainer>&& container_)
 {
-	this->container = std::move(container);
+	this->container = std::move(container_);
 }
 
-void ConsoleUI::setEventListener(std::unique_ptr<EventListener>&& eventListener)
+void ConsoleUI::setEventListener(std::unique_ptr<EventListener>&& eventListener_)
 {
-	this->eventListener = std::move(eventListener);
+	this->eventListener = std::move(eventListener_);
 }
 
 void ConsoleUI::init()
@@ -122,14 +122,14 @@ void ConsoleUI::handleArrowInput(char arrow)
 void ConsoleUI::handleInput()
 {
 	//single char handling
-	char key = _getch();
+	char key = static_cast<char>(_getch());
 	if (handleKeyInput(key))
 	{
 		return;
 	}
 
 	//special keys have another char
-	key = _getch();
+	key = static_cast<char>(_getch());
 	handleArrowInput(key);
 }
 

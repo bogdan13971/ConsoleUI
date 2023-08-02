@@ -2,10 +2,10 @@
 
 using namespace ui;
 
-void UIComponent::setPosition(unsigned char row, unsigned char col)
+void UIComponent::setPosition(VTSizeType row_, VTSizeType col_)
 {
-	this->row = row;
-	this->col = col;
+	row = row_;
+	col = col_;
 }
 
 void UIComponent::print() const
@@ -25,9 +25,9 @@ void Title::print() const
 	std::cout << CLEAR_FORMAT;
 }
 
-void Title::alignToCenter(unsigned char width)
+void Title::alignToCenter(VTSizeType width)
 {
-	setPosition(0, (width - label.size()) / 2);
+	setPosition(0, (width - static_cast<VTSizeType>(label.size()) / 2));
 }
 
 Helper::Helper()
@@ -48,14 +48,14 @@ void Helper::addHelper(const std::string& key, const std::string& command)
 	helpers.insert(std::make_pair(key, command));
 }
 
-void Helper::setMaxTab(unsigned char maxTab)
+void Helper::setMaxTab(VTSizeType maxTab_)
 {
-	this->maxTab = maxTab;
+	maxTab = maxTab_;
 }
 
-void Helper::setPadding(unsigned char padding)
+void Helper::setPadding(VTSizeType padding_)
 {
-	this->padding = padding;
+	padding = padding_;
 }
 
 void Helper::toggle()
@@ -72,19 +72,21 @@ void Helper::print() const
 
 	UIComponent::print();
 		
-	unsigned char tab = 0;
-	unsigned char index = 0;
-	unsigned char lineRow = 0;
+	VTSizeType tab = 0;
+	VTSizeType index = 0;
+	VTSizeType lineRow = 0;
 
 	for (auto& pair : helpers)
 	{
 		if (index == 0)
 		{
-			std::cout << moveCursor(row + lineRow, padding / 2 - pair.first.size());
+			std::cout << moveCursor(row + lineRow, 
+									padding / 2 - static_cast<VTSizeType>(pair.first.size()));
 		}
 		else
 		{
-			std::cout << moveCursor(row + lineRow, padding / 2 + padding * index - pair.first.size());
+			std::cout << moveCursor(row + lineRow, 
+									padding / 2 + padding * index - static_cast<VTSizeType>(pair.first.size()));
 		}
 
 		std::cout << pair.first << ": " << pair.second;

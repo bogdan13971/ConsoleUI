@@ -62,17 +62,17 @@ int main()
 	eventListener->registerKeyPressEventHandler('i', [&counter, &isDirty]() {counter++; isDirty = true; });
 
 	auto menu = std::make_unique<Menu>();
-	auto it1 = menu->createItem("Item 1", [&ui]() {ui.log("Item 1 was pressed"); });
+	menu->createItem("Item 1", [&ui]() {ui.log("Item 1 was pressed"); });
 	auto sub1 = menu->createSubmenu("Sub 1", [&ui]() {ui.log("Entered submenu 1"); });
-	auto it2 = menu->createItem("Item 2", [&ui]() {ui.log("Item 2 was pressed"); });
-	auto it3 = menu->createItem("Item 3", [&ui]() {ui.log("Item 3 was pressed"); });
+	menu->createItem("Item 2", [&ui]() {ui.log("Item 2 was pressed"); });
+	menu->createItem("Item 3", [&ui]() {ui.log("Item 3 was pressed"); });
 
-	auto sub1it1 = sub1.createItem("Item 1 in Sub 1", [&ui]() {ui.log("Item 1 in submenu 1"); });
-	auto sub1it2 = sub1.createItem("Maciuca", [&ui]() {ui.log("Vai ce madular"); });
+	sub1.createItem("Item 1 in Sub 1", [&ui]() {ui.log("Item 1 in submenu 1"); });
+	sub1.createItem("Maciuca", [&ui]() {ui.log("Vai ce madular"); });
 	auto sub1it3 = sub1.createSubmenu("Madular", [&ui]() {ui.log("Doamna mirabela"); }, [&ui]() {ui.log("Out of mirabela"); });
-	auto subit3sub1 = sub1it3.createItem("Ce gagica exploziva", [&ui]() {ui.log("Ati explodad in amor"); });
+	sub1it3.createItem("Ce gagica exploziva", [&ui]() {ui.log("Ati explodad in amor"); });
 
-	auto subit3sub2 = sub1it3.createItem("E facuta pe masura mea", [&ui]() {ui.log("E frumoasa nebuna"); });
+	sub1it3.createItem("E facuta pe masura mea", [&ui]() {ui.log("E frumoasa nebuna"); });
 	
 	auto dyn1 = menu->createItem("Dyn 1", NO_OP_CB, [&counter]() {return std::to_string(counter);});
 

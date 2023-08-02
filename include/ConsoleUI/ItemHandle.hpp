@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../utils/types.hpp"
-#include "../utils/non_owning_ptr.hpp"
+#include <utils/types.hpp>
+#include <utils/non_owning_ptr.hpp>
 
 namespace ui
 {

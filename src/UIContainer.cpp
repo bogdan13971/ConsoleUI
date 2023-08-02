@@ -14,7 +14,7 @@ UIContainer::UIContainer(std::unique_ptr<Title>&& title,
 	log{ std::move(log) },
 	helper{ std::move(helper) }
 {
-	unsigned char height, width;
+	VTSizeType height, width;
 	std::tie(height, width) = getViewportSize();
 
 	this->title->alignToCenter(width);
