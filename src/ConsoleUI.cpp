@@ -1,7 +1,7 @@
 #include <conio.h>
 #include "ConsoleUI.hpp"
 #include "ConsoleLog.hpp"
-#include "ConsoleCommands.hpp"
+#include "CVTHelper.hpp"
 
 #define KEY_UP 72
 #define KEY_LEFT 75
