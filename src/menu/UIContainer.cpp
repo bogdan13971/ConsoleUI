@@ -43,20 +43,36 @@ Helper& UIContainer::getHelper()
 	return *(helper.get());
 }
 
-std::unique_ptr<UIContainer> UIContainer::createSimple(std::string&& titleLabel, std::unique_ptr<Menu>&& menu)
-{
-	return std::make_unique<UIContainer>(
-		std::make_unique<Title>(std::move(titleLabel)),
-		std::move(menu),
-		std::make_unique<ConsoleLog>(),
-		std::make_unique<Helper>()
-	);				
-}
-
 void UIContainer::print() const
 {
 	title->print();
 	menu->print();
 	log->print();
 	helper->print();
+}
+
+std::unique_ptr<UIContainer> ui::createSimpleContainer(
+	std::string&& titleLabel,
+	std::unique_ptr<Menu>&& menu)
+{
+	return std::make_unique<UIContainer>(
+		std::make_unique<Title>(std::move(titleLabel)),
+		std::move(menu),
+		std::make_unique<ConsoleLog>(),
+		std::make_unique<Helper>()
+	);
+}
+
+std::unique_ptr<UIContainer> ui::createContainer(
+	std::unique_ptr<Title>&& title,
+	std::unique_ptr<Menu>&& menu,
+	std::unique_ptr<ConsoleLog>&& log,
+	std::unique_ptr<Helper>&& helper)
+{
+	return std::make_unique<UIContainer>(
+		std::move(title),
+		std::move(menu),
+		std::move(log),
+		std::move(helper)
+	);
 }

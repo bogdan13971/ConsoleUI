@@ -58,4 +58,9 @@ public:
 	}
 };
 
+inline auto createEventListener()
+{
+	return std::make_unique<EventListener>();
+}
+
 }//ui

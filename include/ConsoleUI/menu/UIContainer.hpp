@@ -31,22 +31,26 @@ public:
 	ConsoleLog& getLog();
 
 	Helper& getHelper();
-
-	/**
-	 * @brief Create a container with a default log and helper
-	 * @param titleLabel Label for the title UI component
-	 * @param menu Menu UI component
-	 * @return 
-	*/
-	static std::unique_ptr<UIContainer> createSimple(
-		std::string&& titleLabel, 
-		std::unique_ptr<Menu>&& menu);
-
 	/**
 	 * @brief Print all the elements of the container
 	*/
 	void print() const;
 };
 
+/**
+ * @brief Create a container with a default log and helper
+ * @param titleLabel Label for the title UI component
+ * @param menu Menu UI component
+ * @return
+*/
+std::unique_ptr<UIContainer> createSimpleContainer(
+	std::string&& titleLabel,
+	std::unique_ptr<Menu>&& menu);
+
+std::unique_ptr<UIContainer> createContainer(
+	std::unique_ptr<Title>&& title,
+	std::unique_ptr<Menu>&& menu,
+	std::unique_ptr<ConsoleLog>&& log,
+	std::unique_ptr<Helper>&& helper);
 
 }// ui

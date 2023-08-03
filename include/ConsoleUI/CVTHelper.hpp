@@ -30,8 +30,8 @@ namespace ui
 	{
 		{CVTCommand::SET_FORMAT,		"\033[30;47m"},
 		{CVTCommand::CLEAR_FORMAT,		"\033[0m"},
-		{CVTCommand::CLEAR_SCREEN,		"\033[0K"},
-		{CVTCommand::CLEAR_LINE,		"\033[?1049h"},
+		{CVTCommand::CLEAR_SCREEN,		"\033[2J"},
+		{CVTCommand::CLEAR_LINE,		"\033[0K"},
 		{CVTCommand::ALTERNATE_BUFFER,	"\033[?1049h"},
 		{CVTCommand::MAIN_BUFFER,		"\033[?1049l"},
 		{CVTCommand::HIDE_CURSOR,		"\033[?25l"},

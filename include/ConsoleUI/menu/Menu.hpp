@@ -43,4 +43,9 @@ public:
 	std::vector<std::reference_wrapper<SubMenu>> getParents();
 };
 
+inline auto createMenu()
+{
+	return std::make_unique<Menu>();
+}
+
 }//ui

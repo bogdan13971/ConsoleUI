@@ -4,7 +4,7 @@
 #include <iostream>
 #include <unordered_map>
 
-#include "CVTHelper.hpp"
+#include "../CVTHelper.hpp"
 
 namespace ui
 {
@@ -40,6 +40,11 @@ public:
 	void alignToCenter(VTSizeType viewportWidth);
 };
 
+inline auto createTitle(std::string&& label)
+{
+	return std::make_unique<Title>(std::move(label));
+}
+
 class Helper : public UIComponent
 {
 private:
@@ -61,6 +66,11 @@ public:
 
 	void print() const override;
 };
+
+inline auto createHelper()
+{
+	return std::make_unique<Helper>();
+}
 
 class ConsoleLog : public UIComponent
 {
@@ -84,5 +94,10 @@ public:
 
 	void print() const override;
 };
+
+inline auto createLog(VTSizeType maxLines = 10)
+{
+	return std::make_unique<ConsoleLog>();
+}
 
 }// ui

@@ -1,6 +1,7 @@
 #include <ConsoleUI/ConsoleUI.hpp>
 #include <ConsoleUI/CVTHelper.hpp>
 #include <ConsoleUI/menu/UIComponent.hpp>
+#include <ConsoleUI/menu/UIContainer.hpp>
 #include <sstream>
 #include <conio.h>
 
@@ -24,11 +25,11 @@ void testBuilder()
 			.endSubmenu()
 		.build();
 
-	auto container = UIContainer::createSimple("Simple title", std::move(menu));
-	auto list = std::make_unique<EventListener>();
+	auto container = createSimpleContainer("Simple title", std::move(menu));
+	auto listener = createEventListener();
 	
 	ui.setContainer(std::move(container));
-	ui.setEventListener(std::move(list));
+	ui.setEventListener(std::move(listener));
 
 	ui.start();
 }
@@ -39,12 +40,9 @@ int main()
 
 	using namespace ui;
 
-	int width, height;
-	std::tie(height, width) = getViewportSize();
+	auto title = createTitle("Sample title");
 
-	auto title = std::make_unique<Title>("Sample title");
-
-	auto helper = std::make_unique<Helper>();
+	auto helper = createHelper();
 	helper->addHelper("i", "increment");
 	helper->addHelper("j", "log");
 
@@ -52,7 +50,7 @@ int main()
 	bool isDirty = false;
 	ConsoleUI ui;
 
-	auto eventListener = std::make_unique<EventListener>();
+	auto eventListener = createEventListener();
 	eventListener->registerEventHandler(EVENT_TYPE::START, [&ui]() {ui.log("hello from start"); });
 	eventListener->registerEventHandler(EVENT_TYPE::EXIT, [&ui]() {ui.log("exited"); });
 	eventListener->registerEventHandler(EVENT_TYPE::UP, [&ui]() {ui.log("up pressed"); });
@@ -61,22 +59,21 @@ int main()
 	eventListener->registerKeyPressEventHandler('j', [&ui]() {ui.log("j key pressed"); });
 	eventListener->registerKeyPressEventHandler('i', [&counter, &isDirty]() {counter++; isDirty = true; });
 
-	auto menu = std::make_unique<Menu>();
+	auto menu = createMenu();
 	menu->createItem("Item 1", [&ui]() {ui.log("Item 1 was pressed"); });
 	auto sub1 = menu->createSubmenu("Sub 1", [&ui]() {ui.log("Entered submenu 1"); });
 	menu->createItem("Item 2", [&ui]() {ui.log("Item 2 was pressed"); });
 	menu->createItem("Item 3", [&ui]() {ui.log("Item 3 was pressed"); });
 
 	sub1.createItem("Item 1 in Sub 1", [&ui]() {ui.log("Item 1 in submenu 1"); });
-	sub1.createItem("Maciuca", [&ui]() {ui.log("Vai ce madular"); });
-	auto sub1it3 = sub1.createSubmenu("Madular", [&ui]() {ui.log("Doamna mirabela"); }, [&ui]() {ui.log("Out of mirabela"); });
-	sub1it3.createItem("Ce gagica exploziva", [&ui]() {ui.log("Ati explodad in amor"); });
-
-	sub1it3.createItem("E facuta pe masura mea", [&ui]() {ui.log("E frumoasa nebuna"); });
+	sub1.createItem("Item 2 in Sub 1", [&ui]() {ui.log("Item 2 in submenu 1"); });
+	auto sub1it3 = sub1.createSubmenu("Sub2", [&ui]() {ui.log("Inside sub2"); }, [&ui]() {ui.log("Out of sub2"); });
+	sub1it3.createItem("Item1 in sub2", [&ui]() {ui.log("item1 in sub2"); });
+	sub1it3.createItem("Item2 in sub2", [&ui]() {ui.log("item2 in sub2"); });
 	
-	auto dyn1 = menu->createItem("Dyn 1", NO_OP_CB, [&counter]() {return std::to_string(counter);});
+	auto dyn1 = menu->createItem("Dynamic Item", NO_OP_CB, [&counter]() {return std::to_string(counter);});
 
-	auto container = std::make_unique<UIContainer>(
+	auto container = createContainer(
 		std::move(title),
 		std::move(menu),
 		std::make_unique<ConsoleLog>(),
