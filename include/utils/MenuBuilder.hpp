@@ -9,6 +9,9 @@ namespace ui
 
 class Menu;
 
+/**
+ * @brief Simple class to build a menu hierarchy
+*/
 class MenuBuilder
 {
 private:

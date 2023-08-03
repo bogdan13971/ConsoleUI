@@ -1,6 +1,6 @@
 #include "SubMenu.hpp"
 #include "CVTHelper.hpp"
-#include "Menu.hpp"
+#include "menu/Menu.hpp"
 
 using namespace ui;
 using utils::non_owning_ptr;

@@ -2,9 +2,9 @@
 
 #include <memory>
 
-#include "Menu.hpp"
+#include "menu/Menu.hpp"
 #include "EventListener.hpp"
-#include "UIContainer.hpp"
+#include "menu/UIContainer.hpp"
 
 namespace ui
 {
@@ -35,7 +35,10 @@ public:
 
 	void start();
 	void setUpdateCallback(std::function<void()> callback);
-	void log(std::string&&);
+	/**
+	 * @brief Log or sink line
+	*/
+	void log(std::string line);
 	void clearLog();
 
 	UIContainer& getContainer();

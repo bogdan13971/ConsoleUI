@@ -1,6 +1,5 @@
 #include <conio.h>
 #include "ConsoleUI.hpp"
-#include "ConsoleLog.hpp"
 #include "CVTHelper.hpp"
 
 #define KEY_UP 72
@@ -147,7 +146,7 @@ void ConsoleUI::start()
 	exit();
 }
 
-void ConsoleUI::log(std::string&& line)
+void ConsoleUI::log(std::string line)
 {
 	getContainer().getLog().addLine(std::move(line));
 }

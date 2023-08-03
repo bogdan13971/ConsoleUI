@@ -1,6 +1,6 @@
 #include <ConsoleUI/ConsoleUI.hpp>
 #include <ConsoleUI/CVTHelper.hpp>
-#include <ConsoleUI/UIComponent.hpp>
+#include <ConsoleUI/menu/UIComponent.hpp>
 #include <sstream>
 #include <conio.h>
 

@@ -1,4 +1,4 @@
-#include "UIComponent.hpp"
+#include "menu/UIComponent.hpp"
 
 using namespace ui;
 
@@ -101,5 +101,45 @@ void Helper::print() const
 			tab = 0;
 			lineRow++;
 		}
+	}
+}
+
+
+ConsoleLog::ConsoleLog()
+	: ConsoleLog{ 10 }
+{}
+
+ConsoleLog::ConsoleLog(VTSizeType maxLines_)
+	:maxLines{ maxLines_ }
+{}
+
+void ConsoleLog::setMaxLines(VTSizeType maxLines_)
+{
+	maxLines = maxLines_;
+}
+
+void ConsoleLog::addLine(std::string line)
+{
+	lines.push_back(std::move(line));
+
+	if (lines.size() > maxLines)
+	{
+		lines.pop_front();
+	}
+}
+
+void ConsoleLog::clear()
+{
+	lines.clear();
+}
+
+void ConsoleLog::print() const
+{
+	executeCommand(CVTCommand::CLEAR_TO_END);
+	moveCursor(row - static_cast<VTSizeType>(lines.size()), 0);
+
+	for (const auto& line : lines)
+	{
+		std::cout << line << "\n";
 	}
 }

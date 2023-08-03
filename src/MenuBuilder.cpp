@@ -1,6 +1,6 @@
 #include "../utils/MenuBuilder.hpp"
-#include "Menu.hpp"
-#include "SubMenu.hpp"
+#include "menu/Menu.hpp"
+#include "menu/SubMenu.hpp"
 
 using namespace ui;
 

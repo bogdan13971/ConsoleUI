@@ -1,5 +1,5 @@
-#include "UIContainer.hpp"
-#include "Menu.hpp"
+#include "menu/UIContainer.hpp"
+#include "menu/Menu.hpp"
 
 using namespace ui;
 using utils::non_owning_ptr;
@@ -53,7 +53,7 @@ std::unique_ptr<UIContainer> UIContainer::createSimple(std::string&& titleLabel,
 	);				
 }
 
-void UIContainer::print()
+void UIContainer::print() const
 {
 	title->print();
 	menu->print();

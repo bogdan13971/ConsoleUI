@@ -9,5 +9,5 @@ namespace ui
 	using UpdateCallback = std::function<std::string()>;
 	using BackCallback = std::function<void()>;
 
-	const ExecCallback NO_OP_CB = []() {};
+	static const ExecCallback NO_OP_CB = []() {};
 }

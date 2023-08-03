@@ -17,7 +17,13 @@ protected:
 
 public:
 	~UIComponent() = default;
+	/**
+	 * @brief Set position for the virtual terminal
+	*/
 	void setPosition(VTSizeType row, VTSizeType col);
+	/**
+	 * @brief Print component at set position on the virtual terminal
+	*/
 	virtual void print() const;
 };
 
@@ -31,7 +37,7 @@ public:
 
 	void print() const override;
 
-	void alignToCenter(VTSizeType width);
+	void alignToCenter(VTSizeType viewportWidth);
 };
 
 class Helper : public UIComponent
@@ -69,7 +75,10 @@ public:
 
 	void setMaxLines(VTSizeType maxLines);
 
-	void addLine(std::string&& line);
+	/**
+	 * @brief Add or sink line
+	*/
+	void addLine(std::string line);
 
 	void clear();
 

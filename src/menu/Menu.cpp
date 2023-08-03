@@ -1,4 +1,4 @@
-#include "Menu.hpp"
+#include "menu/Menu.hpp"
 #include "SubMenu.hpp"
 
 using namespace ui;
@@ -92,51 +92,15 @@ SubMenu& Menu::getParentSubMenu()
 	return *(history.top());
 }
 
-std::vector<SubMenu*> Menu::getParents()
+std::vector<std::reference_wrapper<SubMenu>> Menu::getParents()
 {
-	std::vector<SubMenu*> parents;
-	std::copy(history._Get_container().begin(),
-		history._Get_container().end(),
-		std::back_inserter(parents));
+	decltype(getParents()) parents;
+	parents.reserve(history.size());
+
+	for (auto parent : history._Get_container())
+	{
+		parents.emplace_back(*parent);
+	}
 
 	return parents;
-}
-
-ConsoleLog::ConsoleLog()
-	: ConsoleLog{ 10 }
-{}
-
-ConsoleLog::ConsoleLog(VTSizeType maxLines_)
-	:maxLines{ maxLines_ }
-{}
-
-void ConsoleLog::setMaxLines(VTSizeType maxLines_)
-{
-	maxLines = maxLines_;
-}
-
-void ConsoleLog::addLine(std::string&& line)
-{
-	lines.push_back(std::move(line));
-
-	if (lines.size() > maxLines)
-	{
-		lines.pop_front();
-	}
-}
-
-void ConsoleLog::clear()
-{
-	lines.clear();
-}
-
-void ConsoleLog::print() const
-{
-	executeCommand(CVTCommand::CLEAR_TO_END);
-	moveCursor(row - static_cast<VTSizeType>(lines.size()), 0);
-
-	for (const auto& line : lines)
-	{
-		std::cout << line << "\n";
-	}
 }

@@ -40,7 +40,7 @@ public:
 	size_t numberOfItems() const;
 	Item& getSelectedItem();
 	SubMenu& getParentSubMenu();
-	std::vector<SubMenu*> getParents();
+	std::vector<std::reference_wrapper<SubMenu>> getParents();
 };
 
 }//ui
