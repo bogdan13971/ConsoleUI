@@ -6,6 +6,9 @@
 namespace utils
 {
 
+/**
+ * @brief Simple wrapper over a non null, non owning pointer
+*/
 template<class T>
 class non_owning_ptr
 {

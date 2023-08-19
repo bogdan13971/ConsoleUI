@@ -21,11 +21,11 @@ public:
 	MenuBuilder();
 	std::unique_ptr<Menu> build();
 
-	MenuBuilder& addItem(std::string&&, const ExecCallback& = NO_OP_CB);
-	MenuBuilder& addItem(std::string&&, const ExecCallback&, const UpdateCallback&);
+	MenuBuilder& addItem(std::string&& label, const ExecCallback& execCB = NO_OP_CB);
+	MenuBuilder& addItem(std::string&& label, const ExecCallback& execCB, const UpdateCallback& updateCB);
 
-	MenuBuilder& addSubmenu(std::string&&, const ExecCallback& = NO_OP_CB);
-	MenuBuilder& addSubmenu(std::string&&, const ExecCallback&, const UpdateCallback&, const BackCallback & = NO_OP_CB);
+	MenuBuilder& addSubmenu(std::string&& label, const ExecCallback& execCB = NO_OP_CB);
+	MenuBuilder& addSubmenu(std::string&& label, const ExecCallback& execCB, const UpdateCallback& updateCB, const BackCallback& backCB = NO_OP_CB);
 	
 	MenuBuilder& endSubmenu();
 };

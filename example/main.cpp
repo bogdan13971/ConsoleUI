@@ -43,6 +43,8 @@ int main()
 	helper->addHelper("i", "increment");
 	helper->addHelper("j", "log");
 
+	auto log = createLog();
+
 	int counter = 1;
 	bool isDirty = false;
 	ConsoleUI ui;
@@ -73,7 +75,7 @@ int main()
 	auto container = createContainer(
 		std::move(title),
 		std::move(menu),
-		std::make_unique<ConsoleLog>(),
+		std::move(log),
 		std::move(helper)
 	);
 

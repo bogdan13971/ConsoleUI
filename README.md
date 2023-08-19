@@ -1,5 +1,5 @@
 # Console UI
-Simple C++ console UI.
+Simple C++ console UI with menu and key listeners.
 ![Example](./example/example.png)
 
 #### Components
@@ -9,6 +9,8 @@ ConsoleUI has the following components that can be injected and retrieved after:
 
 ## Usage
 Creating a menu can be done either explicit or using the provided builder.
+Execution callbacks can be registered when accesing items or entering and exiting submenus.
+Update callbacks can also be registered for changing the labels dynamically.
 ```cpp
 MenuBuilder builder;
 auto menu = builder.addItem("Item1")
@@ -21,11 +23,11 @@ auto menu = builder.addItem("Item1")
             .build();
 
 auto menu = createMenu();
-menu->createItem("Item 1");
+menu->createItem("Item 1", [&ui]() {ui.log("Item 1 was pressed");});
 menu->createItem("Item 2");
 auto sub1 = menu->createSubmenu("Sub 1");
 sub1->createItem("Item3");
-sub1->createItem("Item4");
+sub1->createItem("Item4", NO_OP_CB, []() {return "new label";});
 menu->createItem("Item5");
 ```
 The visual container can be created by providing each component or using a default configuration.

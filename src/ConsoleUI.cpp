@@ -22,7 +22,7 @@ void ConsoleUI::setContainer(std::unique_ptr<UIContainer>&& container_)
 	this->container = std::move(container_);
 }
 
-void ConsoleUI::setEventListener(std::unique_ptr<EventListener>&& eventListener_)
+void ConsoleUI::setEventListener(std::unique_ptr<EventHandler>&& eventListener_)
 {
 	this->eventListener = std::move(eventListener_);
 }
@@ -166,7 +166,7 @@ Menu& ConsoleUI::getMenu()
 	return getContainer().getMenu();
 }
 
-EventListener& ConsoleUI::getListener()
+EventHandler& ConsoleUI::getListener()
 {
 	return *(eventListener.get());
 }
