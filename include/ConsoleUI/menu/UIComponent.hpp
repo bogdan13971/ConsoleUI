@@ -8,7 +8,9 @@
 
 namespace ui
 {
-
+/**
+ * @brief Visual component that is printed at a specific (x,y) coordinate on the terminal screen
+*/
 class UIComponent
 {
 protected:
@@ -40,11 +42,6 @@ public:
 	void alignToCenter(VTSizeType viewportWidth);
 };
 
-inline auto createTitle(std::string&& label)
-{
-	return std::make_unique<Title>(std::move(label));
-}
-
 class Helper : public UIComponent
 {
 private:
@@ -66,11 +63,6 @@ public:
 
 	void print() const override;
 };
-
-inline auto createHelper()
-{
-	return std::make_unique<Helper>();
-}
 
 class ConsoleLog : public UIComponent
 {
@@ -95,9 +87,8 @@ public:
 	void print() const override;
 };
 
-inline auto createLog(VTSizeType maxLines = 10)
-{
-	return std::make_unique<ConsoleLog>();
-}
+std::unique_ptr<Title> createTitle(std::string&& label);
+std::unique_ptr<Helper> createHelper();
+std::unique_ptr<ConsoleLog>createLog(VTSizeType maxLines = 10);
 
 }// ui

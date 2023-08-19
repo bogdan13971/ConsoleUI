@@ -3,16 +3,19 @@
 #include <memory>
 
 #include "menu/Menu.hpp"
-#include "EventListener.hpp"
+#include "EventHandler.hpp"
 #include "menu/UIContainer.hpp"
 
 namespace ui
 {
 /**
  * @brief Console Menu with key listeners
+ * 
+ * The visual components are drawn in the virtual terminal's alternate buffer.
+ * 
  * The visual components are rendered only at menu movements or key presses.
  * Rendering is done by moving the terminal cursor and overwritting.
- * This is done to remove terminal flickering and to simplify the rendering loop.
+ * This is done to remove flickering and to simplify the rendering loop.
  * The rendering is NOT frame-based.
  * 
  * Preffer using the log function instead of printing to stdout because the cursor will not be on the last line.  

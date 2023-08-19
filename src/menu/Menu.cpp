@@ -104,3 +104,8 @@ std::vector<std::reference_wrapper<SubMenu>> Menu::getParents()
 
 	return parents;
 }
+
+std::unique_ptr<Menu> ui::createMenu()
+{
+	return std::make_unique<Menu>();
+}

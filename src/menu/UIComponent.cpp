@@ -30,6 +30,11 @@ void Title::alignToCenter(VTSizeType width)
 	setPosition(0, (width - static_cast<VTSizeType>(label.size())) / 2);
 }
 
+std::unique_ptr<Title> ui::createTitle(std::string&& label)
+{
+	return std::make_unique<Title>(std::move(label));
+}
+
 Helper::Helper()
 	: helpers{
 		{"Arrows", "Move"},
@@ -104,6 +109,10 @@ void Helper::print() const
 	}
 }
 
+std::unique_ptr<Helper> ui::createHelper()
+{
+	return std::make_unique<Helper>();
+}
 
 ConsoleLog::ConsoleLog()
 	: ConsoleLog{ 10 }
@@ -142,4 +151,9 @@ void ConsoleLog::print() const
 	{
 		std::cout << line << "\n";
 	}
+}
+
+std::unique_ptr<ConsoleLog> ui::createLog(VTSizeType maxLines)
+{
+	return std::make_unique<ConsoleLog>(maxLines);
 }

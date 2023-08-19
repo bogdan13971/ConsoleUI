@@ -37,32 +37,32 @@ public:
 	{}
 
 public:
-	inline virtual void print() const
+	virtual void print() const
 	{
 		std::cout << label << "\n";
 	}
 
-	inline virtual void execute()
+	virtual void execute()
 	{
 		execCallback();
 	}
 
-	inline virtual void update()
+	virtual void update()
 	{
 		label = updateCallback();
 	}
 
-	inline void setExecCallback(const ExecCallback& cb)
+	void setExecCallback(const ExecCallback& cb)
 	{
 		execCallback = cb;
 	}
 
-	inline void setUpdateCallback(const UpdateCallback& cb)
+	void setUpdateCallback(const UpdateCallback& cb)
 	{
 		updateCallback = cb;
 	}
 
-	inline const ExecCallback& getExecCallback() const
+	const ExecCallback& getExecCallback() const
 	{
 		return execCallback;
 	}
